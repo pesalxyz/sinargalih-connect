@@ -181,6 +181,7 @@ button {
 .news-card-image {
   aspect-ratio: 16 / 9;
   min-height: 0;
+  width: 100%;
   margin: 16px 0;
   border-radius: 18px;
   border: 1px solid var(--line);
@@ -195,6 +196,24 @@ button {
   display: block;
   object-fit: cover;
   object-position: center;
+}
+
+.news-card-image-button {
+  display: block;
+  padding: 0;
+  background: transparent;
+  font: inherit;
+  text-align: inherit;
+  cursor: zoom-in;
+}
+
+.news-card-image-button img {
+  transition: transform 180ms ease;
+}
+
+.news-card-image-button:hover img,
+.news-card-image-button:focus-visible img {
+  transform: scale(1.02);
 }
 
 .news-card-image-announcement {

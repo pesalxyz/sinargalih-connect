@@ -170,15 +170,17 @@ async function readImageFile(file) {
     reader.addEventListener("load", () => {
       const image = new Image();
       image.addEventListener("load", () => {
-        const maxSize = 900;
+        const maxSize = 1800;
         const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
         const canvas = document.createElement("canvas");
         canvas.width = Math.max(1, Math.round(image.width * scale));
         canvas.height = Math.max(1, Math.round(image.height * scale));
 
         const context = canvas.getContext("2d");
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = "high";
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", 0.76));
+        resolve(canvas.toDataURL("image/jpeg", 0.92));
       });
       image.addEventListener("error", () => reject(new Error("Gambar tidak dapat dibaca.")));
       image.src = reader.result;

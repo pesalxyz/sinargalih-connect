@@ -300,13 +300,18 @@ async function renderBeritaList() {
       <time class="news-date" datetime="${escapeHtml(item.date || "")}">${formatDateId(item.date)}</time>
       ${
         imageUrl
-          ? `<div class="news-card-image"><img src="${imageUrl}" alt="Gambar ${escapeHtml(item.title)}" /></div>`
+          ? `<button class="news-card-image news-card-image-button" type="button" data-full-image="${imageUrl}" data-full-title="${escapeHtml(item.title)}" aria-label="Lihat gambar ${escapeHtml(item.title)} fullscreen"><img src="${imageUrl}" alt="Gambar ${escapeHtml(item.title)}" /></button>`
           : `<div class="news-card-image ${fallbackClass}" role="img" aria-label="Ilustrasi ${escapeHtml(item.title)}"></div>`
       }
       <p>${escapeHtml(item.summary || "Ringkasan berita belum diisi.")}</p>
     `;
     container.appendChild(article);
   });
+
+  if (!container.dataset.lightboxReady) {
+    container.addEventListener("click", handleUmkmImageClick);
+    container.dataset.lightboxReady = "true";
+  }
 }
 
 async function renderKontakList() {
