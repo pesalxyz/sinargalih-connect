@@ -808,12 +808,31 @@ button {
 }
 
 .hero-stage-primary {
-  background: #fffaf0;
-  color: #18311f;
+  background: var(--accent);
+  color: white;
+  border: 1px solid transparent;
 }
 
 .hero-stage-secondary {
   background: rgba(255, 255, 255, 0.08);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.hero-stage-secondary:hover,
+.hero-stage-secondary:focus,
+.hero-stage-secondary:focus-visible,
+.hero-stage-secondary:active {
+  background: var(--accent);
+  color: white;
+  border-color: rgba(39, 89, 55, 0.88);
+}
+
+.hero-stage-actions:has(.hero-stage-secondary:hover) .hero-stage-primary,
+.hero-stage-actions:has(.hero-stage-secondary:focus) .hero-stage-primary,
+.hero-stage-actions:has(.hero-stage-secondary:focus-visible) .hero-stage-primary,
+.hero-stage-actions:has(.hero-stage-secondary:active) .hero-stage-primary {
+  background: rgba(255, 255, 255, 0.1);
   color: white;
   border: 1px solid rgba(255, 255, 255, 0.22);
 }
@@ -878,6 +897,10 @@ button {
 .landing-panel h2 {
   margin: 12px 0 0;
   font-family: var(--font-display);
+}
+
+.portal-card h2 {
+  color: #111111;
 }
 
 .portal-card p,
@@ -1971,24 +1994,19 @@ button {
 
   .nav-links {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 8px;
-    margin: 0 -4px;
-    padding: 0 4px 4px;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .nav-links::-webkit-scrollbar {
-    display: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
   }
 
   .nav-link {
     flex: 0 0 auto;
-    padding: 8px 12px;
-    font-size: 0.92rem;
+    padding: 7px 9px;
+    font-size: 0.78rem;
+    line-height: 1.15;
     white-space: nowrap;
   }
 
@@ -2022,7 +2040,7 @@ button {
 
   .landing-masthead {
     min-height: auto;
-    padding-top: 112px;
+    padding-top: 136px;
   }
 
   .chatbot-widget {
