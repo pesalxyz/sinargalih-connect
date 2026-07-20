@@ -1,0 +1,332 @@
+[
+  {
+    "id": "toko-ridwan",
+    "name": "Toko Ridwan",
+    "category": "UMKM",
+    "lat": -6.7068178,
+    "lng": 107.3138946,
+    "whatsapp": "https://wa.me/6281290817144",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Ridwan merupakan usaha di bidang perdagangan yang menjual toko sembako, makanan, minuman, snack, dll. Buka setiap hari pukul 06.00 - 22.00."
+  },
+  {
+    "id": "es-teh-sunda-istimewa",
+    "name": "Es Teh Sunda Istimewa",
+    "category": "UMKM",
+    "lat": -6.7068934,
+    "lng": 107.3138842,
+    "whatsapp": "https://wa.me/6283876065100",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Es Teh Sunda Istimewa merupakan usaha di bidang makanan & minuman yang menjual es teh. Usaha ini sudah berjalan selama 7 bulan, sejak 2026. Buka setiap hari pukul 08.00 - 01.00."
+  },
+  {
+    "id": "rmd-sablon",
+    "name": "RMD Sablon",
+    "category": "UMKM",
+    "lat": -6.7070043,
+    "lng": 107.3136974,
+    "whatsapp": "https://wa.me/6283139896269",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "RMD Sablon merupakan usaha di bidang jasa yang menjual sablon baju. Usaha ini sudah berjalan selama 4 tahun, sejak 2022. Buka setiap hari pukul 09.00-20.00."
+  },
+  {
+    "id": "toko-sembako",
+    "name": "Toko Sembako",
+    "category": "UMKM",
+    "lat": -6.7106917,
+    "lng": 107.3171283,
+    "whatsapp": "https://wa.me/6283162472553",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Sembako merupakan usaha di bidang perdagangan. Usaha ini sudah berjalan selama 5 tahun, sejak 2021. Buka setiap hari pukul 06.00 - 22.00."
+  },
+  {
+    "id": "toko-src-bu-ihat",
+    "name": "Toko SRC Bu Ihat",
+    "category": "UMKM",
+    "lat": -6.7049561,
+    "lng": 107.3148152,
+    "whatsapp": "https://wa.me/6283161155066",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko SRC Bu Ihat merupakan usaha di bidang perdagangan yang menjual warung sembako. Usaha ini sudah berjalan selama 6 tahun, sejak 2020. Buka setiap hari pukul 05.00-21.00."
+  },
+  {
+    "id": "bengkel-motor-bapak-adi",
+    "name": "Bengkel Motor bapak Adi",
+    "category": "UMKM",
+    "lat": -6.7055944,
+    "lng": 107.3146037,
+    "whatsapp": "https://wa.me/6283169230600",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Bengkel Motor bapak Adi merupakan usaha di bidang jasa. Usaha ini sudah berjalan selama 2-3 tahun, sejak 2023. Buka setiap hari pukul 09.00-18.00."
+  },
+  {
+    "id": "toko-jahit-pak-wahyu",
+    "name": "Toko Jahit Pak Wahyu",
+    "category": "UMKM",
+    "lat": -6.7054309,
+    "lng": 107.3146137,
+    "whatsapp": "https://wa.me/6283861340213",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Jahit Pak Wahyu merupakan usaha di bidang jasa. Usaha ini sudah berjalan selama 20 tahun, sejak 2006. Buka setiap hari pukul 07.00 - 20.00."
+  },
+  {
+    "id": "warung-mie-ayam-baso-solo-cabang-palumbon",
+    "name": "Warung Mie Ayam Baso Solo Cabang Palumbon",
+    "category": "UMKM",
+    "lat": -6.7080385,
+    "lng": 107.3124214,
+    "whatsapp": "https://wa.me/6285875894809",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Warung Mie Ayam Baso Solo Cabang Palumbon merupakan usaha di bidang makanan & minuman. Usaha ini sudah berjalan selama 4-5 tahun, sejak 2021. Buka pada hari Senin, Selasa, Kamis, Jumat, Sabtu, Minggu pukul 09.00 - 21.00."
+  },
+  {
+    "id": "warung-nasi-dan-bubur-ayam-nilan-cahaya",
+    "name": "Warung nasi dan Bubur ayam nilan cahaya",
+    "category": "UMKM",
+    "lat": -6.70601,
+    "lng": 107.3141698,
+    "whatsapp": "https://wa.me/6283861165777",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Warung nasi dan Bubur ayam nilan cahaya merupakan usaha di bidang makanan & minuman yang menjual bubur ayam & lauk pauk. Usaha ini sudah berjalan selama 6 tahun, sejak 2020. Buka setiap hari pukul 05.00-20.00."
+  },
+  {
+    "id": "toko-buah-mmh-fitri",
+    "name": "Toko Buah Mmh Fitri",
+    "category": "UMKM",
+    "lat": -6.7060923,
+    "lng": 107.3141289,
+    "whatsapp": "https://wa.me/6283899576667",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Buah Mmh Fitri merupakan usaha di bidang perdagangan. Usaha ini sudah berjalan selama 3 tahun, sejak 2023. Buka setiap hari pukul 06.00 - 21.00."
+  },
+  {
+    "id": "mayla-printing",
+    "name": "Mayla Printing",
+    "category": "UMKM",
+    "lat": -6.7073679,
+    "lng": 107.3132538,
+    "whatsapp": "https://wa.me/6283878586461",
+    "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Mayla Printing merupakan usaha di bidang jasa. Usaha ini sudah berjalan selama 3 tahun, sejak 2023. Buka setiap hari pukul 06.00 - 18.00."
+  },
+  {
+    "id": "toko-basreng-haidar",
+    "name": "Toko Basreng Haidar",
+    "category": "UMKM",
+    "lat": -6.7076,
+    "lng": 107.3130259,
+    "whatsapp": "https://wa.me/6283186773502",
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Basreng Haidar merupakan usaha di bidang perdagangan. Usaha ini sudah berjalan selama 6-7 tahun. Buka setiap hari pukul 06.30-18.00."
+  },
+  {
+    "id": "toko-algina-plastik",
+    "name": "Toko Algina Plastik",
+    "category": "UMKM",
+    "lat": -6.7084984,
+    "lng": 107.3115242,
+    "whatsapp": "https://wa.me/6281909618140",
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Algina Plastik merupakan usaha di bidang perdagangan. Usaha ini sudah berjalan selama 5 tahun, sejak 2021. Buka setiap hari pukul 07.00 - 17.00."
+  },
+  {
+    "id": "mushola",
+    "name": "Mushola",
+    "category": "Fasilitas Umum",
+    "lat": -6.7084228,
+    "lng": 107.3118705,
+    "whatsapp": null,
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Mushola merupakan fasilitas umum berupa tempat ibadah. Kondisinya saat ini baik."
+  },
+  {
+    "id": "ternak-lele-pak-dindin",
+    "name": "Ternak Lele Pak Dindin",
+    "category": "UMKM",
+    "lat": -6.7105129,
+    "lng": 107.313001,
+    "whatsapp": "https://wa.me/6285213307512",
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Ternak Lele Pak Dindin merupakan usaha di bidang perikanan. Usaha ini sudah berjalan selama 15 tahun, sejak 2011. Buka setiap hari."
+  },
+  {
+    "id": "peternakan-ayam-petelur",
+    "name": "Peternakan Ayam Petelur",
+    "category": "UMKM",
+    "lat": -6.713625,
+    "lng": 107.311839,
+    "whatsapp": null,
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Peternakan Ayam Petelur merupakan usaha di bidang pertanian & perkebunan. Usaha ini sudah berjalan selama kira-kira 10 tahun, sejak 2016. Buka setiap hari pukul 08.00 - 17.00."
+  },
+  {
+    "id": "rizky-tailor",
+    "name": "Rizky Tailor",
+    "category": "UMKM",
+    "lat": -6.7045589,
+    "lng": 107.3149185,
+    "whatsapp": "https://wa.me/6283180612659",
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Rizky Tailor merupakan usaha di bidang jasa yang menjual jahit baju. Usaha ini sudah berjalan selama 4 tahun, sejak 2021. Buka setiap hari pukul 08.00 - 17.00."
+  },
+  {
+    "id": "toko-berkah-rezeki",
+    "name": "Toko Berkah Rezeki",
+    "category": "UMKM",
+    "lat": -6.7049028,
+    "lng": 107.3147317,
+    "whatsapp": "https://wa.me/6285861739461",
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Berkah Rezeki merupakan usaha di bidang perdagangan. Usaha ini sudah berdiri sejak 2021. Buka pada hari Senin, Selasa, Rabu, Kamis, Jumat, Sabtu pukul 13.00 - 20.00."
+  },
+  {
+    "id": "wrung-bu-yayah",
+    "name": "Wrung Bu Yayah",
+    "category": "UMKM",
+    "lat": -6.7052555,
+    "lng": 107.3147093,
+    "whatsapp": "https://wa.me/6285794429475",
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Wrung Bu Yayah merupakan usaha di bidang perdagangan. Usaha ini sudah berdiri sejak 1985. Buka setiap hari pukul 06.00 - 23.59."
+  },
+  {
+    "id": "rm-putra-jambak",
+    "name": "RM Putra Jambak",
+    "category": "UMKM",
+    "lat": -6.7055698,
+    "lng": 107.3146154,
+    "whatsapp": "https://wa.me/6282258539939",
+    "address": "Dusun 2, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "RM Putra Jambak merupakan usaha di bidang makanan & minuman yang menjual masakan Padang. Usaha ini sudah berdiri sejak Oktober 2025. Buka setiap hari pukul 08.00 - 22.00."
+  },
+  {
+    "id": "tambak-ikan-pak-uyok",
+    "name": "Tambak ikan pak uyok",
+    "category": "Potensi Alam",
+    "lat": -6.7203174,
+    "lng": 107.3169198,
+    "whatsapp": "https://wa.me/6283805283727",
+    "address": "Dusun 3, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Tambak ikan Pak Uyok merupakan potensi alam di bidang perikanan (tambak, kolam) dengan luas area sekitar 5 unit kolam. Saat ini hasilnya dijual ke supplier/bandar, dengan kendala utama pada pengolahan/nilai tambah dan modal."
+  },
+  {
+    "id": "teras-seblak-sakahoyong",
+    "name": "Teras Seblak sakahoyong",
+    "category": "UMKM",
+    "lat": -6.7115974,
+    "lng": 107.3206329,
+    "whatsapp": "https://wa.me/6287770478886",
+    "address": "Dusun 3, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Teras Seblak Sakahoyong merupakan usaha di bidang makanan & minuman yang menjual seblak, es, basreng, dan juga menyediakan mini ATM. Usaha ini sudah berjalan selama 1 tahun, sejak 2025. Buka pada hari Senin, Selasa, Rabu, Kamis, Sabtu, Minggu pukul 09.00-15.00."
+  },
+  {
+    "id": "pabrik-penggiling-padi",
+    "name": "pabrik penggiling padi",
+    "category": "UMKM",
+    "lat": -6.7106198,
+    "lng": 107.3137075,
+    "whatsapp": "https://wa.me/6283892761581",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Pabrik penggiling padi merupakan usaha di bidang jasa yang melayani jasa giling padi. Usaha ini sudah berjalan selama 10 tahun. Buka setiap hari pukul 07.00-16.00."
+  },
+  {
+    "id": "toko-ikan-asin-dan-beras-pa-wowo",
+    "name": "toko ikan asin dan beras  pa wowo",
+    "category": "UMKM",
+    "lat": -6.7007136,
+    "lng": 107.3169154,
+    "whatsapp": "https://wa.me/6287848524362",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko ikan asin dan beras Pa Wowo merupakan usaha di bidang perdagangan yang menjual beras dan ikan asin. Usaha ini sudah berjalan selama 2 tahun, sejak 2024. Buka setiap hari pukul 07.00-17.00."
+  },
+  {
+    "id": "sinar-berkah",
+    "name": "sinar berkah",
+    "category": "UMKM",
+    "lat": -6.7034267,
+    "lng": 107.3155354,
+    "whatsapp": "https://wa.me/6281912286343",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Sinar Berkah merupakan usaha di bidang perdagangan yang menjual pakan burung dan ikan. Usaha ini sudah berjalan selama 4 tahun. Buka setiap hari pukul 07.00-17.00."
+  },
+  {
+    "id": "sidomuncul",
+    "name": "sidomuncul",
+    "category": "UMKM",
+    "lat": -6.7035076,
+    "lng": 107.3154999,
+    "whatsapp": null,
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Sidomuncul merupakan usaha di bidang makanan & minuman yang menjual jamu. Buka setiap hari."
+  },
+  {
+    "id": "bapak-ejang",
+    "name": "bapak ejang",
+    "category": "UMKM",
+    "lat": -6.7035935,
+    "lng": 107.3154482,
+    "whatsapp": "https://wa.me/6285559699562",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Bapak Ejang merupakan usaha di bidang perdagangan yang menjual berbagai kebutuhan dan es kelapa. Usaha ini sudah berjalan selama 6 tahun. Buka setiap hari pukul 06.00-21.00."
+  },
+  {
+    "id": "sate-maranggi-boga-rasa-kang-acoy-tea",
+    "name": "sate maranggi boga rasa kang acoy tea",
+    "category": "UMKM",
+    "lat": -6.7032499,
+    "lng": 107.3156799,
+    "whatsapp": "https://wa.me/6283823912032",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Sate Maranggi Boga Rasa Kang Acoy Tea merupakan usaha di bidang makanan & minuman yang menjual sate. Usaha ini sudah berjalan selama 8 tahun. Buka setiap hari pukul 13.00-22.00."
+  },
+  {
+    "id": "toko-mekar-berkah",
+    "name": "toko mekar berkah",
+    "category": "UMKM",
+    "lat": -6.7033365,
+    "lng": 107.3156413,
+    "whatsapp": "https://wa.me/6283816167376",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Toko Mekar Berkah merupakan usaha di bidang perdagangan yang menjual seblak, sembako, dan perabot. Usaha ini sudah berjalan selama 1 tahun. Buka setiap hari pukul 06.00 - 01.00."
+  },
+  {
+    "id": "konter-gips-cell",
+    "name": "konter gips cell",
+    "category": "UMKM",
+    "lat": -6.7024757,
+    "lng": 107.3159451,
+    "whatsapp": "https://wa.me/6283126268181",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Konter Gips Cell merupakan usaha di bidang perdagangan yang menjual voucher, case, kartu perdana, dan charger. Usaha ini sudah berjalan selama 8 tahun. Buka setiap hari pukul 07.00 - 21.00."
+  },
+  {
+    "id": "pangkas-rambut-mas-didi",
+    "name": "pangkas rambut mas didi",
+    "category": "UMKM",
+    "lat": -6.7023865,
+    "lng": 107.3160584,
+    "whatsapp": "https://wa.me/6283193255039",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Pangkas Rambut Mas Didi merupakan usaha jasa pangkas rambut. Usaha ini sudah berjalan selama 26 tahun. Buka setiap hari pukul 08.00-21.00."
+  },
+  {
+    "id": "depot-isi-ulang",
+    "name": "depot isi ulang",
+    "category": "UMKM",
+    "lat": -6.7007452,
+    "lng": 107.3168359,
+    "whatsapp": "https://wa.me/6287848524362",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Depot Isi Ulang merupakan usaha di bidang makanan & minuman yang menyediakan isi ulang air minum. Usaha ini sudah berjalan selama 13 tahun. Buka setiap hari pukul 06.00 - 17.00."
+  },
+  {
+    "id": "ujang-jaya-motor",
+    "name": "ujang jaya motor",
+    "category": "UMKM",
+    "lat": -6.7007102,
+    "lng": 107.3169281,
+    "whatsapp": "https://wa.me/6283878857427",
+    "address": "Dusun 4, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
+    "description": "Ujang Jaya Motor merupakan usaha jasa bengkel motor. Usaha ini sudah berjalan selama 4 tahun. Buka pada hari Senin, Selasa, Rabu, Kamis, Sabtu, Minggu pukul 08.00-17.00."
+  }
+]

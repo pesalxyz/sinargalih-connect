@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Peta Desa Sinargalih</title>
+    <link rel="stylesheet" href="./styles.css?v=45" />
+    <script src="./chatbot.js?v=1" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav" aria-label="Navigasi utama">
+        <a class="nav-brand" href="./index.html">
+          <img class="nav-brand-logo" src="./assets/images/logo-sinargalih-transparent.png" alt="Logo Desa Sinargalih" />
+          <span>Sinargalih Connect</span>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="./index.html">Beranda</a>
+          <a class="nav-link" href="./profil-desa.html">Profil Desa</a>
+          <a class="nav-link" href="./pemerintahan.html">Pemerintahan</a>
+          <a class="nav-link" href="./berita.html">Berita</a>
+          <a class="nav-link" href="./katalog-umkm.html">UMKM</a>
+          <a class="nav-link" href="./kontak.html">Kontak</a>
+          <a class="nav-link active" href="./peta-desa.html" aria-current="page">Peta Desa</a>
+        </div>
+      </nav>
+
+      <main class="content-shell">
+        <section class="page-intro preview-card">
+          <p class="eyebrow">Peta Interaktif Desa</p>
+          <h1>Peta Desa Sinargalih</h1>
+        </section>
+
+        <section class="layout">
+          <aside class="sidebar">
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Kategori</h2>
+              <button id="resetFilterButton" class="ghost-button" type="button">
+                Reset
+              </button>
+            </div>
+            <div id="categoryFilters" class="filter-list" aria-label="Filter kategori"></div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Daftar Lokasi</h2>
+              <span id="locationCount" class="pill">0 lokasi</span>
+            </div>
+            <div id="locationList" class="location-list" aria-live="polite"></div>
+          </section>
+
+          </aside>
+
+          <section class="map-section">
+            <div class="map-toolbar">
+              <div>
+                <p class="toolbar-label">Peta Google Interaktif</p>
+                <strong>Sinargalih, Maniis, Purwakarta</strong>
+              </div>
+              <button id="fitBoundsButton" class="primary-button" type="button">
+                Fokus ke Semua Titik
+              </button>
+            </div>
+            <div class="map-frame">
+              <div id="map" class="map-canvas" aria-label="Peta Desa Sinargalih"></div>
+              <div id="mapLoadingOverlay" class="map-loading-overlay">
+                Peta Google sedang dimuat.
+              </div>
+            </div>
+          </section>
+        </section>
+      </main>
+    </div>
+    <script src="./app.js?v=11" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - Sinargalih Connect</title>
+    <link rel="stylesheet" href="./styles.css?v=45" />
+    <script src="./site-data.js?v=5" defer></script>
+    <script src="./admin.js?v=2" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav" aria-label="Navigasi utama">
+        <a class="nav-brand" href="./index.html">
+          <img class="nav-brand-logo" src="./assets/images/logo-sinargalih-transparent.png" alt="Logo Desa Sinargalih" />
+          <span>Sinargalih Connect</span>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="./index.html">Beranda</a>
+          <a class="nav-link active" href="./admin.html" aria-current="page">Admin</a>
+        </div>
+      </nav>
+
+      <main class="content-shell">
+        <section id="authPanel" class="auth-grid">
+          <article class="preview-card auth-card">
+            <p class="eyebrow">Masuk Admin</p>
+            <h1>Login Dashboard</h1>
+            <form id="loginForm" class="admin-form">
+              <label class="admin-field">
+                <span>Username</span>
+                <input name="username" type="text" autocomplete="username" required />
+              </label>
+              <label class="admin-field">
+                <span>Password</span>
+                <input name="password" type="password" autocomplete="current-password" required />
+              </label>
+              <button class="primary-button" type="submit">Masuk</button>
+              <p id="loginStatus" class="admin-status">Gunakan akun admin yang sudah disetujui.</p>
+            </form>
+          </article>
+
+          <article class="preview-card auth-card">
+            <p class="eyebrow">Request Akun</p>
+            <h2>Buat Akun Admin</h2>
+            <form id="registerForm" class="admin-form">
+              <label class="admin-field">
+                <span>Nama admin</span>
+                <input name="name" type="text" autocomplete="name" required />
+              </label>
+              <label class="admin-field">
+                <span>Username</span>
+                <input name="username" type="text" autocomplete="username" required />
+              </label>
+              <label class="admin-field">
+                <span>Password</span>
+                <input name="password" type="password" autocomplete="new-password" required />
+              </label>
+              <button class="ghost-button" type="submit">Kirim Request</button>
+              <p id="registerStatus" class="admin-status">Request harus di-ACC oleh admin lain.</p>
+            </form>
+          </article>
+        </section>
+
+        <section id="dashboardPanel" class="admin-dashboard" hidden style="display: none">
+        <section class="page-intro preview-card">
+          <p class="eyebrow">Dashboard Admin</p>
+          <h1>Kelola Konten Website</h1>
+          <p>
+            Tambahkan, edit, dan hapus data UMKM, berita, serta kontak langsung dari halaman ini.
+          </p>
+          <div class="admin-toolbar">
+            <button class="ghost-button" type="button" id="exportDataButton">Ekspor Data</button>
+            <label class="ghost-button admin-import-button">
+              Impor Data
+              <input id="importDataInput" type="file" accept="application/json" />
+            </label>
+            <button class="danger-button" type="button" id="resetDataButton">Reset Data</button>
+            <button class="ghost-button" type="button" id="logoutButton">Keluar</button>
+          </div>
+          <p class="admin-note">
+            Login sebagai <strong id="activeAdminName">admin</strong>. Perubahan tersimpan di database Vercel Postgres.
+          </p>
+        </section>
+
+        <section class="section-grid-2">
+          <article class="preview-card admin-account-card">
+            <div class="panel-heading">
+              <h2>Request Akun Admin</h2>
+              <span id="requestCount" class="pill">0 request</span>
+            </div>
+            <div id="adminRequestList" class="admin-account-list"></div>
+          </article>
+
+          <article class="preview-card admin-account-card">
+            <div class="panel-heading">
+              <h2>Admin Aktif</h2>
+              <span id="adminCount" class="pill">1 akun</span>
+            </div>
+            <div id="adminUserList" class="admin-account-list"></div>
+          </article>
+        </section>
+
+        <section class="admin-layout">
+          <aside class="preview-card admin-tabs" aria-label="Pilih tabel">
+            <button class="filter-chip active" type="button" data-admin-tab="umkm" aria-selected="true">Tabel UMKM</button>
+            <button class="filter-chip" type="button" data-admin-tab="berita" aria-selected="false">Tabel Berita</button>
+            <button class="filter-chip" type="button" data-admin-tab="kontak" aria-selected="false">Tabel Kontak</button>
+          </aside>
+
+          <section class="preview-card admin-panel">
+            <form id="adminForm" class="admin-form">
+              <div class="panel-heading">
+                <h2 id="adminFormTitle">Tambah Data</h2>
+                <button class="ghost-button" type="button" id="cancelEditButton" hidden>Batal Edit</button>
+              </div>
+              <div id="adminFormFields" class="admin-form-grid"></div>
+              <button class="primary-button" type="submit">Simpan Data</button>
+            </form>
+          </section>
+        </section>
+
+        <section class="preview-card admin-table-card">
+          <div class="panel-heading">
+            <h2>Data Tersimpan</h2>
+            <p id="adminStatus" class="admin-status">Siap mengelola data.</p>
+          </div>
+          <div class="admin-table-wrap">
+            <table class="admin-table">
+              <thead id="adminTableHead"></thead>
+              <tbody id="adminTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

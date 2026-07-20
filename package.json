@@ -1,0 +1,11 @@
+{
+  "name": "sinargalih-connect",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "check": "node --check lib/server.js && for f in api/*.js; do node --check \"$f\"; done && node --check chatbot.js && node --check site-data.js && node --check admin.js && node --check app.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}
