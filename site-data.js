@@ -573,7 +573,7 @@ async function renderBeritaList() {
     const article = document.createElement("article");
     const fallbackClass = index % 2 === 0 ? "news-card-image-announcement" : "news-card-image-community";
     const imageUrl = safeUrl(item.imageUrl);
-    article.className = "preview-card";
+    article.className = "preview-card news-card";
     article.innerHTML = `
       <span class="pill">${escapeHtml(item.category || "Berita")}</span>
       <h2>${escapeHtml(item.title)}</h2>

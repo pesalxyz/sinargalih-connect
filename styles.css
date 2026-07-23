@@ -178,6 +178,10 @@ button {
   font-weight: 700;
 }
 
+.news-card h2 {
+  margin-top: 14px;
+}
+
 .news-card-image {
   aspect-ratio: 16 / 9;
   min-height: 0;
