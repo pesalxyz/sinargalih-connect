@@ -2014,19 +2014,26 @@ button {
 
   .nav-links {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 6px;
-    margin: 0;
-    padding: 0;
-    overflow: visible;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 8px;
+    margin: 0 -4px;
+    padding: 0 4px 4px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav-links::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-link {
     flex: 0 0 auto;
-    padding: 7px 9px;
-    font-size: 0.78rem;
-    line-height: 1.15;
+    padding: 8px 12px;
+    font-size: 0.92rem;
+    line-height: 1.2;
     white-space: nowrap;
   }
 
@@ -2060,7 +2067,7 @@ button {
 
   .landing-masthead {
     min-height: auto;
-    padding-top: 136px;
+    padding-top: 112px;
   }
 
   .chatbot-widget {
