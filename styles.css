@@ -166,6 +166,72 @@ button {
   padding-left: 18px;
 }
 
+.village-history-card {
+  align-self: start;
+}
+
+.history-toggle-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.history-excerpt {
+  position: relative;
+  max-height: 320px;
+  overflow: hidden;
+}
+
+.history-excerpt::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 96px;
+  background: linear-gradient(180deg, rgba(250, 247, 239, 0), var(--panel) 88%);
+  pointer-events: none;
+}
+
+.history-excerpt p:last-child {
+  margin-bottom: 0;
+}
+
+.history-toggle-button {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  margin-top: 18px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.history-less {
+  display: none;
+}
+
+.history-toggle-input:checked + .history-excerpt {
+  max-height: none;
+}
+
+.history-toggle-input:checked + .history-excerpt::after {
+  display: none;
+}
+
+.history-toggle-input:checked ~ .history-toggle-button .history-more {
+  display: none;
+}
+
+.history-toggle-input:checked ~ .history-toggle-button .history-less {
+  display: inline;
+}
+
 .news-date {
   display: inline-flex;
   width: fit-content;
