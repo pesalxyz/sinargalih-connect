@@ -9,6 +9,23 @@ const chatbotState = {
   ]
 };
 
+function escapeChatbotHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function formatBotMessage(text) {
+  return escapeChatbotHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/^\s*[-*]\s+(.+)$/gm, "<span class=\"chatbot-list-line\">$1</span>")
+    .replace(/\n{2,}/g, "<br><br>")
+    .replace(/\n/g, "<br>");
+}
+
 function createChatbot() {
   const root = document.createElement("section");
   root.className = "chatbot-widget";
@@ -53,7 +70,11 @@ function createChatbot() {
     chatbotState.messages.forEach((message) => {
       const bubble = document.createElement("article");
       bubble.className = `chatbot-message chatbot-message-${message.role === "user" ? "user" : "bot"}`;
-      bubble.textContent = message.text;
+      if (message.role === "user") {
+        bubble.textContent = message.text;
+      } else {
+        bubble.innerHTML = formatBotMessage(message.text);
+      }
       messages.appendChild(bubble);
     });
     messages.scrollTop = messages.scrollHeight;

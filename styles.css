@@ -1900,6 +1900,22 @@ button {
   overflow-wrap: anywhere;
 }
 
+.chatbot-message strong {
+  font-weight: 700;
+}
+
+.chatbot-list-line {
+  display: block;
+  padding-left: 14px;
+  position: relative;
+}
+
+.chatbot-list-line::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+}
+
 .chatbot-message-bot {
   justify-self: start;
   background: white;
