@@ -1,4 +1,9 @@
-const GEMINI_MODEL = process.env.GEMINI_MODEL || "gemini-3.1-flash-lite";
+const MINIMAX_MODEL = process.env.MINIMAX_MODEL || "MiniMax-M2.7";
+const MINIMAX_API_URL =
+  process.env.MINIMAX_API_URL || "https://api.minimax.io/v1/chat/completions";
+
+const SYSTEM_PROMPT =
+  "Anda adalah Kang Galih, chatbot customer service untuk Website Resmi Desa Sinargalih, Kecamatan Maniis, Kabupaten Purwakarta. Perkenalkan diri sebagai Kang Galih jika pengguna bertanya siapa Anda. Jawab dalam bahasa Indonesia yang ramah, singkat, dan membantu. Bantu pengunjung memahami profil desa, berita, UMKM, kontak, dan peta desa. Jika pertanyaan membutuhkan keputusan resmi, dokumen pribadi, atau informasi yang belum tersedia di website, arahkan pengguna untuk menghubungi perangkat desa melalui halaman Kontak. Jangan mengarang nomor layanan baru.";
 
 function normalizeHistory(history) {
   if (!Array.isArray(history)) {
@@ -9,9 +14,15 @@ function normalizeHistory(history) {
     .filter((item) => item && typeof item.text === "string")
     .slice(-10)
     .map((item) => ({
-      role: item.role === "user" ? "user" : "model",
-      parts: [{ text: item.text.slice(0, 1200) }]
+      role: item.role === "user" ? "user" : "assistant",
+      content: item.text.slice(0, 1200)
     }));
+}
+
+function cleanAssistantReply(value) {
+  return String(value || "")
+    .replace(/<think>[\s\S]*?<\/think>/gi, "")
+    .trim();
 }
 
 module.exports = async function handler(request, response) {
@@ -21,9 +32,9 @@ module.exports = async function handler(request, response) {
     return;
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.MINIMAX_API_KEY;
   if (!apiKey) {
-    response.status(500).json({ error: "GEMINI_API_KEY belum diatur." });
+    response.status(500).json({ error: "MINIMAX_API_KEY belum diatur." });
     return;
   }
 
@@ -35,50 +46,43 @@ module.exports = async function handler(request, response) {
   }
 
   try {
-    const geminiResponse = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${encodeURIComponent(apiKey)}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          systemInstruction: {
-            parts: [
-              {
-                text:
-                  "Anda adalah Kang Galih, chatbot customer service untuk Website Resmi Desa Sinargalih, Kecamatan Maniis, Kabupaten Purwakarta. Perkenalkan diri sebagai Kang Galih jika pengguna bertanya siapa Anda. Jawab dalam bahasa Indonesia yang ramah, singkat, dan membantu. Bantu pengunjung memahami profil desa, berita, UMKM, kontak, dan peta desa. Jika pertanyaan membutuhkan keputusan resmi, dokumen pribadi, atau informasi yang belum tersedia di website, arahkan pengguna untuk menghubungi perangkat desa melalui halaman Kontak. Jangan mengarang nomor layanan baru."
-              }
-            ]
+    const minimaxResponse = await fetch(MINIMAX_API_URL, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: MINIMAX_MODEL,
+        messages: [
+          {
+            role: "system",
+            content: SYSTEM_PROMPT
           },
-          contents: [
-            ...normalizeHistory(history),
-            {
-              role: "user",
-              parts: [{ text: userMessage.slice(0, 2000) }]
-            }
-          ],
-          generationConfig: {
-            temperature: 0.5,
-            maxOutputTokens: 700
+          ...normalizeHistory(history),
+          {
+            role: "user",
+            content: userMessage.slice(0, 2000)
           }
-        })
-      }
-    );
+        ],
+        stream: false,
+        temperature: 0.5,
+        max_tokens: 700
+      })
+    });
 
-    const data = await geminiResponse.json();
-    if (!geminiResponse.ok) {
-      response.status(geminiResponse.status).json({
-        error: data.error?.message || "Gemini API gagal merespons."
+    const data = await minimaxResponse.json();
+    if (!minimaxResponse.ok) {
+      response.status(minimaxResponse.status).json({
+        error: data.error?.message || data.message || "MiniMax API gagal merespons."
       });
       return;
     }
 
     const reply =
-      data.candidates?.[0]?.content?.parts
-        ?.map((part) => part.text || "")
-        .join("")
-        .trim() || "Maaf, saya belum bisa menjawab pertanyaan itu.";
+      cleanAssistantReply(data.choices?.[0]?.message?.content) ||
+      cleanAssistantReply(data.reply) ||
+      "Maaf, saya belum bisa menjawab pertanyaan itu.";
 
     response.status(200).json({ reply });
   } catch (error) {

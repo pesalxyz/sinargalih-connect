@@ -71,16 +71,16 @@ assets/images/maskot-chatbot.png
 
 Jika file maskot belum ada, tombol otomatis memakai logo Desa Sinargalih sebagai fallback.
 
-Saat deploy ke Vercel, simpan Gemini API key sebagai environment variable:
+Saat deploy ke Vercel, simpan MiniMax API key sebagai environment variable:
 
 ```text
-GEMINI_API_KEY
+MINIMAX_API_KEY
 ```
 
-Endpoint chatbot tersedia di `api/chatbot.js` dan memakai model default `gemini-2.5-flash`. Jika ingin mengganti model, tambahkan environment variable:
+Endpoint chatbot tersedia di `api/chatbot.js` dan memakai model default `MiniMax-M2.7`. Jika ingin mengganti model, tambahkan environment variable:
 
 ```text
-GEMINI_MODEL
+MINIMAX_MODEL
 ```
 
 Jangan menaruh API key langsung di `chatbot.js` atau file HTML, karena file frontend dapat dilihat publik oleh pengunjung.
@@ -95,8 +95,8 @@ POSTGRES_URL
 ADMIN_JWT_SECRET
 DEFAULT_ADMIN_USERNAME
 DEFAULT_ADMIN_PASSWORD
-GEMINI_API_KEY
-GEMINI_MODEL
+MINIMAX_API_KEY
+MINIMAX_MODEL
 GOOGLE_MAPS_API_KEY
 ```
 
