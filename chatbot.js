@@ -20,6 +20,8 @@ function escapeChatbotHtml(value) {
 
 function formatBotMessage(text) {
   return escapeChatbotHtml(text)
+    .replace(/^#{1,6}\s+(.+)$/gm, "<strong>$1</strong>")
+    .replace(/^&gt;\s+(.+)$/gm, "$1")
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/^\s*[-*]\s+(.+)$/gm, "<span class=\"chatbot-list-line\">$1</span>")
     .replace(/\n{2,}/g, "<br><br>")
