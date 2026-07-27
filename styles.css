@@ -857,13 +857,21 @@ button {
   width: min(100%, 980px);
 }
 
-.hero-typing-title span {
+.hero-typing-title > span {
   display: inline-block;
   white-space: normal;
 }
 
+.hero-title-highlight {
+  background: linear-gradient(135deg, #fff7cc 0%, #f4d66f 42%, #e9a93f 100%);
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 24px rgba(244, 214, 111, 0.22);
+  -webkit-background-clip: text;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .hero-typing-title span {
+  .hero-typing-title > span {
     animation: none;
   }
 }

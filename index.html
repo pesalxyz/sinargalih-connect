@@ -8,7 +8,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <title>Desa Sinargalih</title>
-    <link rel="stylesheet" href="./styles.css?v=57" />
+    <link rel="stylesheet" href="./styles.css?v=58" />
     <script src="./chatbot.js?v=2" defer></script>
   </head>
   <body class="home-page">
@@ -185,17 +185,42 @@
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const typingTarget = document.querySelector("[data-typing-text]");
-        if (!typingTarget || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        if (!typingTarget) {
           return;
         }
 
         const text = typingTarget.dataset.typingText || typingTarget.textContent;
+        const highlightText = "Sinargalih Connect";
+        const highlightStart = text.lastIndexOf(highlightText);
+        const escapeHtml = (value) => value.replace(/[&<>"']/g, (character) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[character]));
+        const renderTypedText = (nextText) => {
+          if (highlightStart < 0 || nextText.length <= highlightStart) {
+            typingTarget.textContent = nextText;
+            return;
+          }
+
+          const beforeHighlight = nextText.slice(0, highlightStart);
+          const highlighted = nextText.slice(highlightStart);
+          typingTarget.innerHTML = `${escapeHtml(beforeHighlight)}<span class="hero-title-highlight">${escapeHtml(highlighted)}</span>`;
+        };
+
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          renderTypedText(text);
+          return;
+        }
+
         let index = 0;
         typingTarget.textContent = "";
         typingTarget.classList.add("is-typing");
 
         const typeNextCharacter = () => {
-          typingTarget.textContent = text.slice(0, index);
+          renderTypedText(text.slice(0, index));
           index += 1;
 
           if (index <= text.length) {
