@@ -853,6 +853,40 @@ button {
   letter-spacing: -0.05em;
 }
 
+.hero-running-title {
+  width: min(100%, 980px);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.hero-running-title span {
+  display: inline-block;
+  min-width: 100%;
+  padding-left: 100%;
+  animation: hero-title-marquee 16s linear infinite;
+}
+
+@keyframes hero-title-marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-running-title {
+    white-space: normal;
+  }
+
+  .hero-running-title span {
+    padding-left: 0;
+    animation: none;
+  }
+}
+
 .hero-highlight {
   position: relative;
   display: inline-block;
