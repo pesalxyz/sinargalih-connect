@@ -8,7 +8,7 @@
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <title>Desa Sinargalih</title>
-    <link rel="stylesheet" href="./styles.css?v=55" />
+    <link rel="stylesheet" href="./styles.css?v=56" />
     <script src="./chatbot.js?v=2" defer></script>
   </head>
   <body class="home-page">
@@ -38,7 +38,7 @@
         <div class="hero-stage">
           <div class="hero-stage-copy">
             <p class="eyebrow hero-stage-eyebrow">Sinargalih Connect</p>
-            <h1 class="hero-typing-title"><span>Jelajahi Desa Sinargalih Lewat Sinargalih Connect</span></h1>
+            <h1 class="hero-typing-title"><span data-typing-text="Jelajahi Desa Sinargalih Lewat Sinargalih Connect">Jelajahi Desa Sinargalih Lewat Sinargalih Connect</span></h1>
             <p class="hero-stage-text">
               Kec. Maniis, Kab. Purwakarta
             </p>
@@ -182,5 +182,29 @@
         </section>
       </main>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const typingTarget = document.querySelector("[data-typing-text]");
+        if (!typingTarget || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          return;
+        }
+
+        const text = typingTarget.dataset.typingText || typingTarget.textContent;
+        let index = 0;
+        typingTarget.textContent = "";
+        typingTarget.classList.add("is-typing");
+
+        const typeNextCharacter = () => {
+          typingTarget.textContent = text.slice(0, index);
+          index += 1;
+
+          if (index <= text.length) {
+            window.setTimeout(typeNextCharacter, 58);
+          }
+        };
+
+        typeNextCharacter();
+      });
+    </script>
   </body>
 </html>
