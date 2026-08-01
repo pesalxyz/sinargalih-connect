@@ -151,7 +151,7 @@ function initializeMap() {
   state.map = new google.maps.Map(document.getElementById("map"), {
     center: villageCenter,
     zoom: defaultZoom,
-    mapTypeId: "roadmap",
+    mapTypeId: "satellite",
     streetViewControl: false,
     fullscreenControl: true,
     clickableIcons: false,
