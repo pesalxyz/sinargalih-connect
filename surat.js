@@ -347,7 +347,7 @@ function renderLetter(event) {
 
   preview.innerHTML = `
     <header class="letter-head">
-      <img src="./assets/images/logo-sinargalih-transparent.png" alt="Logo Desa Sinargalih" />
+      <img src="./assets/images/logo-sinargalih-transparent.png?v=3" alt="Logo Desa Sinargalih" />
       <div>
         <strong>Pemerintah Desa Sinargalih</strong>
         <span>Kecamatan Maniis, Kabupaten Purwakarta</span>

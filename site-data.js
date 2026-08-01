@@ -1,4 +1,5 @@
 const SINARGALIH_STORAGE_KEY = "sinargalih-connect-admin-data-v1";
+const CONTENT_FETCH_TIMEOUT_MS = 2500;
 
 const sinargalihDefaultData = {
   umkm: [
@@ -373,9 +374,18 @@ function cloneData(data) {
   return JSON.parse(JSON.stringify(data));
 }
 
+function fetchWithTimeout(url, options = {}) {
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), CONTENT_FETCH_TIMEOUT_MS);
+  return fetch(url, {
+    ...options,
+    signal: controller.signal
+  }).finally(() => window.clearTimeout(timeoutId));
+}
+
 async function getSinargalihData() {
   try {
-    const response = await fetch("/api/content");
+    const response = await fetchWithTimeout("/api/content");
     if (response.ok) {
       return {
         ...cloneData(sinargalihDefaultData),

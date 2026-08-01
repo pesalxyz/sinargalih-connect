@@ -34,7 +34,7 @@ function createChatbot() {
   root.setAttribute("aria-label", "Kang Galih, chatbot Desa Sinargalih");
   root.innerHTML = `
     <button class="chatbot-toggle" type="button" aria-label="Buka chatbot">
-      <img src="./assets/images/maskot-chatbot.png" alt="" />
+      <img src="./assets/images/maskot-chatbot.png?v=3" alt="" />
     </button>
     <div class="chatbot-panel" hidden>
       <header class="chatbot-header">
@@ -64,7 +64,7 @@ function createChatbot() {
   const messages = root.querySelector(".chatbot-messages");
 
   toggleImage.addEventListener("error", () => {
-    toggleImage.src = "./assets/images/logo-sinargalih-transparent.png";
+    toggleImage.src = "./assets/images/logo-sinargalih-transparent.png?v=3";
   });
 
   function renderMessages() {
