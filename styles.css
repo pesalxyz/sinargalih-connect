@@ -1417,6 +1417,16 @@ button {
   resize: vertical;
 }
 
+.letter-composite-field {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 0.72fr);
+  gap: 10px;
+}
+
+.letter-other-input {
+  margin-top: 8px;
+}
+
 .letter-actions,
 .letter-preview-toolbar {
   display: flex;
@@ -2256,7 +2266,8 @@ button {
   .admin-layout,
   .admin-form-grid,
   .letter-workspace,
-  .letter-field-grid {
+  .letter-field-grid,
+  .letter-composite-field {
     grid-template-columns: 1fr;
   }
 
