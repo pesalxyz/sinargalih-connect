@@ -2137,6 +2137,13 @@ button {
   font-weight: 700;
 }
 
+.chatbot-message a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .chatbot-list-line {
   display: block;
   padding-left: 14px;

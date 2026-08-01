@@ -23,6 +23,7 @@ function formatBotMessage(text) {
     .replace(/^#{1,6}\s+(.+)$/gm, "<strong>$1</strong>")
     .replace(/^&gt;\s+(.+)$/gm, "$1")
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>')
     .replace(/^\s*[-*]\s+(.+)$/gm, "<span class=\"chatbot-list-line\">$1</span>")
     .replace(/\n{2,}/g, "<br><br>")
     .replace(/\n/g, "<br>");

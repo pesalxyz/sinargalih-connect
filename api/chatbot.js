@@ -1,9 +1,13 @@
 const MINIMAX_MODEL = process.env.MINIMAX_MODEL || "MiniMax-M2.7";
 const MINIMAX_API_URL =
   process.env.MINIMAX_API_URL || "https://api.minimax.io/v1/chat/completions";
+const SEARCH_TIMEOUT_MS = 6500;
+const PAGE_FETCH_TIMEOUT_MS = 4500;
+const MAX_SEARCH_RESULTS = 6;
+const MAX_CONTEXT_SOURCES = 4;
 
 const SYSTEM_PROMPT =
-  "Anda adalah Kang Galih, chatbot customer service untuk Website Sinargalih Connect, Kecamatan Maniis, Kabupaten Purwakarta. Perkenalkan diri sebagai Kang Galih jika pengguna bertanya siapa Anda. Wajib jawab seluruhnya dalam bahasa Indonesia yang ramah, singkat, dan membantu. Jangan memakai bahasa Rusia, Jepang, China, Korea, atau aksara non-Latin kecuali pengguna secara eksplisit meminta terjemahan bahasa tersebut. Jangan gunakan format tabel markdown. Anda boleh menjawab pertanyaan umum/universal di luar data website desa memakai pengetahuan umum model, selama tetap sopan, aman, dan tidak mengaku sudah mengecek internet secara real-time. Jika pertanyaan meminta data terbaru, data resmi, atau informasi yang perlu verifikasi browser, jelaskan bahwa jawaban perlu dicek ulang ke sumber resmi, lalu berikan arahan praktis untuk mengeceknya. Jangan menolak hanya karena informasi tidak ada di website, kecuali pertanyaan meminta keputusan resmi, data pribadi, atau hal yang berisiko. Untuk data spesifik Desa Sinargalih, jangan menambah klaim yang tidak ada di rujukan berikut. Data rujukan dasar: Desa Sinargalih berada di Kecamatan Maniis, Kabupaten Purwakarta, Jawa Barat; kode Kemendagri Desa Sinargalih adalah 32.14.07.2003; kode pos wilayah Maniis/Sinargalih adalah 41166. Bantu pengunjung memahami profil desa, berita, UMKM, kontak, peta desa, layanan publik penting di sekitar Kecamatan Maniis, dan pertanyaan umum lain. Untuk pertanyaan keamanan, kehilangan kendaraan/barang, atau laporan kepolisian di wilayah Maniis, bantu arahkan pengguna ke Polsek Maniis. Informasi rujukan: Polsek Maniis berada di Jl. Raya Palumbon, Maniis, Purwakarta; nomor telepon publik yang tercatat: (0264) 231686. Untuk pertanyaan fasilitas kesehatan terdekat dari Desa Sinargalih, arahkan ke Puskesmas Maniis. Informasi rujukan Puskesmas Maniis: Jl. Raya Palumbon No. 5, Maniis, Purwakarta, Jawa Barat 41166; berada di wilayah Desa Citamiang/Kecamatan Maniis; telepon publik yang tercatat: (0264) 203212; perkiraan jarak dari pusat Desa Sinargalih sekitar 2-4 km atau 5-10 menit berkendara, bergantung titik awal. Jam pelayanan dapat berubah, jadi minta pengguna memastikan langsung melalui Puskesmas/Dinas Kesehatan/Google Maps. Sarankan pengguna membawa identitas, bukti kepemilikan, kronologi kejadian, dan segera melapor langsung untuk kasus kehilangan. Jika informasi bersifat darurat, sarankan menghubungi layanan kepolisian/datang ke kantor terdekat. Jangan mengarang nomor layanan baru.";
+  "Anda adalah Kang Galih, chatbot customer service untuk Website Sinargalih Connect, Kecamatan Maniis, Kabupaten Purwakarta. Perkenalkan diri sebagai Kang Galih jika pengguna bertanya siapa Anda. Wajib jawab seluruhnya dalam bahasa Indonesia yang ramah, singkat, dan membantu. Jangan memakai bahasa Rusia, Jepang, China, Korea, atau aksara non-Latin kecuali pengguna secara eksplisit meminta terjemahan bahasa tersebut. Jangan gunakan format tabel markdown. Untuk pertanyaan faktual, lokasi, fasilitas umum, data terbaru, jam layanan, kontak, regulasi, atau pertanyaan yang butuh validasi, gunakan konteks sumber live yang diberikan sistem. Jangan mengaku sudah mengecek internet jika konteks sumber live kosong. Jika sumber live tidak cukup kuat, katakan bahwa datanya belum bisa dipastikan dan beri cara cek resmi. Untuk data spesifik Desa Sinargalih, jangan menambah klaim yang tidak ada di rujukan atau sumber live. Data rujukan dasar: Desa Sinargalih berada di Kecamatan Maniis, Kabupaten Purwakarta, Jawa Barat; kode Kemendagri Desa Sinargalih adalah 32.14.07.2003; kode pos wilayah Maniis/Sinargalih adalah 41166. Bantu pengunjung memahami profil desa, berita, UMKM, kontak, peta desa, layanan publik penting di sekitar Kecamatan Maniis, dan pertanyaan umum lain. Untuk pertanyaan keamanan, kehilangan kendaraan/barang, atau laporan kepolisian di wilayah Maniis, bantu arahkan pengguna ke Polsek Maniis bila didukung sumber atau rujukan dasar; sarankan membawa identitas, bukti kepemilikan, kronologi kejadian, dan segera melapor langsung. Jika informasi bersifat darurat, sarankan menghubungi layanan darurat/datang ke kantor terdekat. Jangan mengarang nomor layanan baru.";
 const LANGUAGE_FIX_PROMPT =
   "Tulis ulang jawaban terakhir menjadi bahasa Indonesia natural saja. Hapus semua teks bahasa Rusia, Jepang, China, Korea, aksara non-Latin, tag reasoning, dan karakter aneh. Pertahankan maksud jawaban, tetap singkat, ramah, dan jelas.";
 
@@ -40,30 +44,6 @@ function normalizeMessage(value) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
-function getLocalQuickAnswer(message) {
-  const normalized = normalizeMessage(message);
-  const asksPuskesmas =
-    normalized.includes("puskesmas") &&
-    (normalized.includes("sinargalih") || normalized.includes("maniis") || normalized.includes("terdekat"));
-
-  if (!asksPuskesmas) {
-    return "";
-  }
-
-  return [
-    "Puskesmas terdekat dari Desa Sinargalih, Kecamatan Maniis adalah Puskesmas Maniis.",
-    "",
-    "Detail lokasi:",
-    "- Nama: Puskesmas Maniis",
-    "- Alamat: Jl. Raya Palumbon No. 5, Maniis, Purwakarta, Jawa Barat 41166",
-    "- Patokan: berada di wilayah Desa Citamiang/Kecamatan Maniis, masih di jalur Jl. Raya Palumbon",
-    "- Telepon yang tercatat: (0264) 203212",
-    "- Perkiraan dari pusat Desa Sinargalih: sekitar 2-4 km atau 5-10 menit berkendara, tergantung titik awal",
-    "",
-    "Untuk rute, buka Google Maps lalu cari: Puskesmas Maniis. Untuk jam layanan terbaru, sebaiknya konfirmasi langsung ke puskesmas karena jadwal bisa berubah pada hari libur atau kondisi tertentu."
-  ].join("\n");
-}
-
 async function requestMinimax(apiKey, messages) {
   const minimaxResponse = await fetch(MINIMAX_API_URL, {
     method: "POST",
@@ -94,6 +74,332 @@ async function requestMinimax(apiKey, messages) {
   );
 }
 
+function fetchWithTimeout(url, options = {}, timeoutMs = SEARCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, {
+    ...options,
+    signal: controller.signal,
+    headers: {
+      "User-Agent": "Mozilla/5.0 (compatible; KangGalihBot/1.0; +https://sinargalihconnect.com)",
+      Accept: "text/html,application/json,text/plain;q=0.8,*/*;q=0.5",
+      ...(options.headers || {})
+    }
+  }).finally(() => clearTimeout(timeoutId));
+}
+
+function decodeHtml(value) {
+  return String(value || "")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&#x2F;/g, "/");
+}
+
+function stripHtml(value) {
+  return decodeHtml(
+    String(value || "")
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<noscript[\s\S]*?<\/noscript>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+  );
+}
+
+function normalizeDuckDuckGoUrl(value) {
+  try {
+    const url = new URL(decodeHtml(value));
+    if (url.hostname.includes("duckduckgo.com") && url.searchParams.get("uddg")) {
+      return url.searchParams.get("uddg");
+    }
+    return url.href;
+  } catch (error) {
+    return "";
+  }
+}
+
+function decodeBase64Url(value) {
+  try {
+    const normalized = String(value || "")
+      .replace(/^a1/i, "")
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+    const padding = "=".repeat((4 - (normalized.length % 4)) % 4);
+    return Buffer.from(`${normalized}${padding}`, "base64").toString("utf8");
+  } catch (error) {
+    return "";
+  }
+}
+
+function normalizeBingUrl(value) {
+  try {
+    const url = new URL(decodeHtml(value));
+    const encodedTarget = url.searchParams.get("u");
+    const decodedTarget = decodeBase64Url(encodedTarget);
+    if (url.hostname.includes("bing.com") && decodedTarget && /^https?:\/\//i.test(decodedTarget)) {
+      return decodedTarget;
+    }
+    return url.href;
+  } catch (error) {
+    return "";
+  }
+}
+
+function isUsefulSource(url) {
+  try {
+    const parsed = new URL(url);
+    return ["http:", "https:"].includes(parsed.protocol) &&
+      !/(bing\.com\/search|google\.[^/]+\/search|youtube\.com|youtu\.be|facebook\.com|instagram\.com\/(reel|p\/)|tiktok\.com|x\.com|twitter\.com)/i.test(parsed.href);
+  } catch (error) {
+    return false;
+  }
+}
+
+function sourceRank(source) {
+  const url = source.url.toLowerCase();
+  let score = 0;
+  if (url.includes(".go.id")) score += 40;
+  if (url.includes("purwakartakab.go.id")) score += 30;
+  if (url.includes("dinkes")) score += 20;
+  if (url.includes("puskesmas")) score += 18;
+  if (url.includes("sinargalih") || url.includes("maniis")) score += 12;
+  if (url.includes("wikipedia.org")) score -= 8;
+  if (url.includes("scribd.com")) score -= 18;
+  return score;
+}
+
+function uniqueSources(sources) {
+  const seen = new Set();
+  return sources.filter((source) => {
+    if (!source.url || seen.has(source.url) || !isUsefulSource(source.url)) {
+      return false;
+    }
+    seen.add(source.url);
+    return true;
+  });
+}
+
+function buildSearchQuery(message) {
+  const normalized = normalizeMessage(message);
+  if (normalized.includes("sinargalih") || normalized.includes("maniis") || normalized.includes("purwakarta")) {
+    return message;
+  }
+  return `${message} Sinargalih Maniis Purwakarta`;
+}
+
+async function searchWithBrave(query) {
+  if (!process.env.BRAVE_SEARCH_API_KEY) {
+    return [];
+  }
+
+  const url = `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(query)}&count=${MAX_SEARCH_RESULTS}&country=id&search_lang=id`;
+  const result = await fetchWithTimeout(url, {
+    headers: {
+      Accept: "application/json",
+      "X-Subscription-Token": process.env.BRAVE_SEARCH_API_KEY
+    }
+  });
+  const data = await result.json();
+  return (data.web?.results || []).map((item) => ({
+    title: item.title || item.url,
+    url: item.url,
+    snippet: stripHtml(item.description || "")
+  }));
+}
+
+async function searchWithTavily(query) {
+  if (!process.env.TAVILY_API_KEY) {
+    return [];
+  }
+
+  const result = await fetchWithTimeout("https://api.tavily.com/search", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      api_key: process.env.TAVILY_API_KEY,
+      query,
+      search_depth: "basic",
+      include_answer: false,
+      max_results: MAX_SEARCH_RESULTS
+    })
+  });
+  const data = await result.json();
+  return (data.results || []).map((item) => ({
+    title: item.title || item.url,
+    url: item.url,
+    snippet: stripHtml(item.content || "")
+  }));
+}
+
+async function searchWithGoogle(query) {
+  if (!process.env.GOOGLE_SEARCH_API_KEY || !process.env.GOOGLE_SEARCH_ENGINE_ID) {
+    return [];
+  }
+
+  const params = new URLSearchParams({
+    key: process.env.GOOGLE_SEARCH_API_KEY,
+    cx: process.env.GOOGLE_SEARCH_ENGINE_ID,
+    q: query,
+    num: String(MAX_SEARCH_RESULTS),
+    hl: "id"
+  });
+  const result = await fetchWithTimeout(`https://www.googleapis.com/customsearch/v1?${params}`);
+  const data = await result.json();
+  return (data.items || []).map((item) => ({
+    title: item.title || item.link,
+    url: item.link,
+    snippet: stripHtml(item.snippet || "")
+  }));
+}
+
+async function searchWithBing(query) {
+  const params = new URLSearchParams({
+    q: query,
+    cc: "ID",
+    setlang: "id-ID",
+    count: String(MAX_SEARCH_RESULTS)
+  });
+  const result = await fetchWithTimeout(`https://www.bing.com/search?${params}`);
+  const html = await result.text();
+  const sources = [];
+  const resultPattern = /<li[^>]+class="b_algo"[\s\S]*?<\/li>/gi;
+  let match;
+  while ((match = resultPattern.exec(html)) && sources.length < MAX_SEARCH_RESULTS) {
+    const block = match[0];
+    const titleMatch = block.match(/<h2[^>]*>\s*<a[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>\s*<\/h2>/i);
+    if (!titleMatch) {
+      continue;
+    }
+
+    sources.push({
+      title: stripHtml(titleMatch[2]),
+      url: normalizeBingUrl(titleMatch[1]),
+      snippet: stripHtml(block.match(/<p[^>]*>([\s\S]*?)<\/p>/i)?.[1] || "")
+    });
+  }
+  return sources;
+}
+
+async function searchWithDuckDuckGo(query) {
+  const result = await fetchWithTimeout(`https://html.duckduckgo.com/html/?q=${encodeURIComponent(query)}`);
+  const html = await result.text();
+  const sources = [];
+  const resultPattern = /<div[^>]+class="result[\s\S]*?<\/div>\s*<\/div>/gi;
+  let match;
+  while ((match = resultPattern.exec(html)) && sources.length < MAX_SEARCH_RESULTS) {
+    const block = match[0];
+    const titleMatch = block.match(/<a[^>]+class="result__a"[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/i);
+    if (!titleMatch) {
+      continue;
+    }
+
+    sources.push({
+      title: stripHtml(titleMatch[2]),
+      url: normalizeDuckDuckGoUrl(titleMatch[1]),
+      snippet: stripHtml(block.match(/class="result__snippet"[^>]*>([\s\S]*?)<\/a>/i)?.[1] || "")
+    });
+  }
+  return sources;
+}
+
+async function searchWeb(query) {
+  const searchers = [searchWithBrave, searchWithTavily, searchWithGoogle, searchWithBing, searchWithDuckDuckGo];
+  for (const searcher of searchers) {
+    try {
+      const sources = uniqueSources(await searcher(query));
+      if (sources.length) {
+        return sources.sort((a, b) => sourceRank(b) - sourceRank(a)).slice(0, MAX_SEARCH_RESULTS);
+      }
+    } catch (error) {
+      console.warn("Live search gagal:", error.message);
+    }
+  }
+  return [];
+}
+
+async function fetchSourceContent(source) {
+  try {
+    const result = await fetchWithTimeout(source.url, {}, PAGE_FETCH_TIMEOUT_MS);
+    const contentType = result.headers.get("content-type") || "";
+    if (!result.ok || !contentType.includes("text/html")) {
+      return source;
+    }
+    const html = await result.text();
+    const title = stripHtml(html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] || source.title);
+    const text = stripHtml(html).slice(0, 1800);
+    return {
+      ...source,
+      title: title || source.title,
+      content: text
+    };
+  } catch (error) {
+    return source;
+  }
+}
+
+async function getLiveSources(message) {
+  const query = buildSearchQuery(message);
+  const searchResults = await searchWeb(query);
+  const rankedSources = searchResults
+    .sort((a, b) => sourceRank(b) - sourceRank(a))
+    .slice(0, MAX_CONTEXT_SOURCES);
+  return Promise.all(rankedSources.map(fetchSourceContent));
+}
+
+function buildLiveContext(sources) {
+  if (!sources.length) {
+    return "Tidak ada sumber live yang berhasil ditemukan atau dibaca.";
+  }
+
+  return sources
+    .map((source, index) => [
+      `Sumber ${index + 1}`,
+      `Judul: ${source.title}`,
+      `URL: ${source.url}`,
+      `Cuplikan: ${source.snippet || "-"}`,
+      `Isi terbaca: ${(source.content || "").slice(0, 1600) || "-"}`
+    ].join("\n"))
+    .join("\n\n");
+}
+
+function appendSourceList(reply, sources) {
+  if (!sources.length || /sumber\s*:/i.test(reply)) {
+    return reply;
+  }
+
+  const sourceList = sources
+    .slice(0, 3)
+    .map((source, index) => `${index + 1}. ${source.title}: ${source.url}`)
+    .join("\n");
+  return `${reply.trim()}\n\nSumber:\n${sourceList}`;
+}
+
+function shouldUseLiveSources(message) {
+  const normalized = normalizeMessage(message);
+  if (/^(halo|hai|hi|assalamualaikum|terima kasih|makasih|thanks)\b/.test(normalized)) {
+    return false;
+  }
+
+  return (
+    normalized.length > 16 ||
+    /\b(apa|apakah|berapa|dimana|di mana|kapan|siapa|kenapa|mengapa|bagaimana|lokasi|alamat|jam|kontak|nomor|kode|id|terdekat|terbaru|harga|berita)\b/.test(normalized)
+  );
+}
+
+function getTodayInIndonesia() {
+  return new Intl.DateTimeFormat("id-ID", {
+    timeZone: "Asia/Jakarta",
+    dateStyle: "full"
+  }).format(new Date());
+}
+
 module.exports = async function handler(request, response) {
   if (request.method !== "POST") {
     response.setHeader("Allow", "POST");
@@ -114,17 +420,15 @@ module.exports = async function handler(request, response) {
     return;
   }
 
-  const quickAnswer = getLocalQuickAnswer(userMessage);
-  if (quickAnswer) {
-    response.status(200).json({ reply: quickAnswer });
-    return;
-  }
-
   try {
+    const liveSources = shouldUseLiveSources(userMessage)
+      ? await getLiveSources(userMessage)
+      : [];
+    const liveContext = buildLiveContext(liveSources);
     const messages = [
       {
         role: "system",
-        content: SYSTEM_PROMPT
+        content: `${SYSTEM_PROMPT}\n\nTanggal sistem: ${getTodayInIndonesia()}.\n\nKonteks sumber live:\n${liveContext}\n\nInstruksi penggunaan sumber: Jika konteks sumber live berisi sumber relevan, jawab berdasarkan sumber tersebut dan sebutkan sumber dengan bahasa ringkas. Utamakan sumber resmi seperti domain pemerintah, fasilitas publik resmi, atau situs lembaga terkait. Jika sumber live kosong atau tidak relevan, jangan menebak detail spesifik; jelaskan batasannya dan beri langkah pengecekan resmi.`
       },
       ...normalizeHistory(history),
       {
@@ -138,7 +442,7 @@ module.exports = async function handler(request, response) {
       reply = await requestMinimax(apiKey, [
         {
           role: "system",
-          content: `${SYSTEM_PROMPT} ${LANGUAGE_FIX_PROMPT}`
+          content: `${SYSTEM_PROMPT} ${LANGUAGE_FIX_PROMPT}\n\nKonteks sumber live:\n${liveContext}`
         },
         {
           role: "user",
@@ -151,6 +455,7 @@ module.exports = async function handler(request, response) {
       reply = "Maaf, Kang Galih belum bisa menyusun jawaban yang rapi. Silakan ulangi pertanyaannya dengan lebih singkat, nanti saya bantu jawab dalam bahasa Indonesia.";
     }
 
+    reply = appendSourceList(reply, liveSources);
     response.status(200).json({ reply });
   } catch (error) {
     response.status(error.statusCode || 500).json({ error: error.message || "Chatbot gagal memproses pesan." });
