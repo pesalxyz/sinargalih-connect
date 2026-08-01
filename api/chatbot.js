@@ -5,6 +5,30 @@ const SEARCH_TIMEOUT_MS = 6500;
 const PAGE_FETCH_TIMEOUT_MS = 4500;
 const MAX_SEARCH_RESULTS = 6;
 const MAX_CONTEXT_SOURCES = 4;
+const SOURCE_STOPWORDS = new Set([
+  "yang",
+  "dari",
+  "untuk",
+  "dengan",
+  "dimana",
+  "mana",
+  "lokasi",
+  "alamat",
+  "terdekat",
+  "kecamatan",
+  "kabupaten",
+  "tolong",
+  "saya",
+  "ingin",
+  "coba",
+  "berapa",
+  "apakah",
+  "adalah",
+  "atau",
+  "dan",
+  "ini",
+  "itu"
+]);
 
 const SYSTEM_PROMPT =
   "Anda adalah Kang Galih, chatbot customer service untuk Website Sinargalih Connect, Kecamatan Maniis, Kabupaten Purwakarta. Perkenalkan diri sebagai Kang Galih jika pengguna bertanya siapa Anda. Wajib jawab seluruhnya dalam bahasa Indonesia yang ramah, singkat, dan membantu. Jangan memakai bahasa Rusia, Jepang, China, Korea, atau aksara non-Latin kecuali pengguna secara eksplisit meminta terjemahan bahasa tersebut. Jangan gunakan format tabel markdown. Untuk pertanyaan faktual, lokasi, fasilitas umum, data terbaru, jam layanan, kontak, regulasi, atau pertanyaan yang butuh validasi, gunakan konteks sumber live yang diberikan sistem. Jangan mengaku sudah mengecek internet jika konteks sumber live kosong. Jika sumber live tidak cukup kuat, katakan bahwa datanya belum bisa dipastikan dan beri cara cek resmi. Untuk data spesifik Desa Sinargalih, jangan menambah klaim yang tidak ada di rujukan atau sumber live. Data rujukan dasar: Desa Sinargalih berada di Kecamatan Maniis, Kabupaten Purwakarta, Jawa Barat; kode Kemendagri Desa Sinargalih adalah 32.14.07.2003; kode pos wilayah Maniis/Sinargalih adalah 41166. Bantu pengunjung memahami profil desa, berita, UMKM, kontak, peta desa, layanan publik penting di sekitar Kecamatan Maniis, dan pertanyaan umum lain. Untuk pertanyaan keamanan, kehilangan kendaraan/barang, atau laporan kepolisian di wilayah Maniis, bantu arahkan pengguna ke Polsek Maniis bila didukung sumber atau rujukan dasar; sarankan membawa identitas, bukti kepemilikan, kronologi kejadian, dan segera melapor langsung. Jika informasi bersifat darurat, sarankan menghubungi layanan darurat/datang ke kantor terdekat. Jangan mengarang nomor layanan baru.";
@@ -162,12 +186,15 @@ function isUsefulSource(url) {
 
 function sourceRank(source) {
   const url = source.url.toLowerCase();
+  const text = normalizeMessage(`${source.title || ""} ${source.snippet || ""} ${source.content || ""}`);
   let score = 0;
   if (url.includes(".go.id")) score += 40;
   if (url.includes("purwakartakab.go.id")) score += 30;
   if (url.includes("dinkes")) score += 20;
   if (url.includes("puskesmas")) score += 18;
   if (url.includes("sinargalih") || url.includes("maniis")) score += 12;
+  if (text.includes("puskesmas maniis")) score += 30;
+  if (text.includes("desa sinargalih")) score += 24;
   if (url.includes("wikipedia.org")) score -= 8;
   if (url.includes("scribd.com")) score -= 18;
   return score;
@@ -186,10 +213,55 @@ function uniqueSources(sources) {
 
 function buildSearchQuery(message) {
   const normalized = normalizeMessage(message);
+  if (normalized.includes("puskesmas") && normalized.includes("maniis")) {
+    return `${message} Dinas Kesehatan Purwakarta Puskesmas Maniis`;
+  }
   if (normalized.includes("sinargalih") || normalized.includes("maniis") || normalized.includes("purwakarta")) {
     return message;
   }
   return `${message} Sinargalih Maniis Purwakarta`;
+}
+
+function getImportantTerms(message) {
+  return normalizeMessage(message)
+    .split(/[^a-z0-9]+/)
+    .filter((term) => term.length > 3 && !SOURCE_STOPWORDS.has(term));
+}
+
+function isRelevantSource(source, message) {
+  const terms = getImportantTerms(message);
+  if (!terms.length) {
+    return true;
+  }
+
+  const sourceText = normalizeMessage(`${source.title || ""} ${source.url || ""} ${source.snippet || ""} ${source.content || ""}`);
+  if (terms.includes("puskesmas") && !sourceText.includes("puskesmas")) {
+    return false;
+  }
+  if (terms.includes("maniis") && !sourceText.includes("maniis")) {
+    return false;
+  }
+  if (terms.includes("sinargalih") && !sourceText.includes("sinargalih") && !sourceText.includes("maniis") && !sourceText.includes("purwakarta")) {
+    return false;
+  }
+
+  return terms.some((term) => sourceText.includes(term)) || sourceRank(source) >= 70;
+}
+
+function getOfficialSourceSeeds(message) {
+  const normalized = normalizeMessage(message);
+  const sources = [];
+
+  if (/\b(puskesmas|faskes|fasilitas kesehatan|kesehatan|klinik)\b/.test(normalized) &&
+    /\b(maniis|sinargalih|purwakarta)\b/.test(normalized)) {
+    sources.push({
+      title: "Puskesmas - Dinas Kesehatan Kabupaten Purwakarta",
+      url: "https://dinkes.purwakartakab.go.id/puskesmas",
+      snippet: "Daftar puskesmas Kabupaten Purwakarta dari Dinas Kesehatan Kabupaten Purwakarta."
+    });
+  }
+
+  return sources;
 }
 
 async function searchWithBrave(query) {
@@ -346,8 +418,10 @@ async function fetchSourceContent(source) {
 
 async function getLiveSources(message) {
   const query = buildSearchQuery(message);
+  const sourceSeeds = getOfficialSourceSeeds(message);
   const searchResults = await searchWeb(query);
-  const rankedSources = searchResults
+  const rankedSources = uniqueSources([...sourceSeeds, ...searchResults])
+    .filter((source) => isRelevantSource(source, message))
     .sort((a, b) => sourceRank(b) - sourceRank(a))
     .slice(0, MAX_CONTEXT_SOURCES);
   return Promise.all(rankedSources.map(fetchSourceContent));
