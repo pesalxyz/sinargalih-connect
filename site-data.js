@@ -10,7 +10,7 @@ const sinargalihDefaultData = {
           "description": "Toko Ridwan merupakan usaha di bidang perdagangan yang menjual toko sembako, makanan, minuman, snack, dll. Buka setiap hari pukul 06.00 - 22.00.",
           "phone": "6281290817144",
           "hours": "Buka setiap hari pukul 06.00 - 22.00",
-          "imageUrl": ""
+          "imageUrl": "./assets/images/umkm/toko-ridwan.webp"
       },
       {
           "id": "umkm-es-teh-sunda-istimewa",
@@ -20,7 +20,7 @@ const sinargalihDefaultData = {
           "description": "Es Teh Sunda Istimewa merupakan usaha di bidang makanan & minuman yang menjual es teh. Usaha ini sudah berjalan selama 7 bulan, sejak 2026. Buka setiap hari pukul 08.00 - 01.00.",
           "phone": "6283876065100",
           "hours": "Buka setiap hari pukul 08.00 - 01.00",
-          "imageUrl": ""
+          "imageUrl": "./assets/images/umkm/esteh-sunda.jpg"
       },
       {
           "id": "umkm-rmd-sablon",
@@ -30,7 +30,7 @@ const sinargalihDefaultData = {
           "description": "RMD Sablon merupakan usaha di bidang jasa yang menjual sablon baju. Usaha ini sudah berjalan selama 4 tahun, sejak 2022. Buka setiap hari pukul 09.00-20.00.",
           "phone": "6283139896269",
           "hours": "Buka setiap hari pukul 09.00-20.00",
-          "imageUrl": ""
+          "imageUrl": "./assets/images/umkm/rmd-sablon.jpeg"
       },
       {
           "id": "umkm-toko-sembako",

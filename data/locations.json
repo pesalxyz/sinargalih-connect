@@ -7,7 +7,8 @@
     "lng": 107.3138946,
     "whatsapp": "https://wa.me/6281290817144",
     "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
-    "description": "Toko Ridwan merupakan usaha di bidang perdagangan yang menjual toko sembako, makanan, minuman, snack, dll. Buka setiap hari pukul 06.00 - 22.00."
+    "description": "Toko Ridwan merupakan usaha di bidang perdagangan yang menjual toko sembako, makanan, minuman, snack, dll. Buka setiap hari pukul 06.00 - 22.00.",
+    "photo": "./assets/images/umkm/toko-ridwan.webp"
   },
   {
     "id": "es-teh-sunda-istimewa",
@@ -17,7 +18,8 @@
     "lng": 107.3138842,
     "whatsapp": "https://wa.me/6283876065100",
     "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
-    "description": "Es Teh Sunda Istimewa merupakan usaha di bidang makanan & minuman yang menjual es teh. Usaha ini sudah berjalan selama 7 bulan, sejak 2026. Buka setiap hari pukul 08.00 - 01.00."
+    "description": "Es Teh Sunda Istimewa merupakan usaha di bidang makanan & minuman yang menjual es teh. Usaha ini sudah berjalan selama 7 bulan, sejak 2026. Buka setiap hari pukul 08.00 - 01.00.",
+    "photo": "./assets/images/umkm/esteh-sunda.jpg"
   },
   {
     "id": "rmd-sablon",
@@ -27,7 +29,8 @@
     "lng": 107.3136974,
     "whatsapp": "https://wa.me/6283139896269",
     "address": "Dusun 1, Desa Sinargalih, Kec. Maniis, Kab. Purwakarta",
-    "description": "RMD Sablon merupakan usaha di bidang jasa yang menjual sablon baju. Usaha ini sudah berjalan selama 4 tahun, sejak 2022. Buka setiap hari pukul 09.00-20.00."
+    "description": "RMD Sablon merupakan usaha di bidang jasa yang menjual sablon baju. Usaha ini sudah berjalan selama 4 tahun, sejak 2022. Buka setiap hari pukul 09.00-20.00.",
+    "photo": "./assets/images/umkm/rmd-sablon.jpeg"
   },
   {
     "id": "toko-sembako",

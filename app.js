@@ -75,7 +75,7 @@ resetFilterButton.addEventListener("click", () => {
 
 async function initialize() {
   const [locations, boundary] = await Promise.all([
-    fetch("./data/locations.json?v=3").then((response) => response.json()),
+    fetch("./data/locations.json?v=4").then((response) => response.json()),
     fetch("./data/village-boundary.geojson?v=4").then((response) => response.json())
   ]);
 
