@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="./assets/images/favicon-sinargalih.png" />
+    <title>Persuratan Digital - Sinargalih Connect</title>
+    <link rel="stylesheet" href="./styles.css?v=59" />
+    <script src="./surat.js?v=1" defer></script>
+    <script src="./chatbot.js?v=2" defer></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <nav class="top-nav" aria-label="Navigasi utama">
+        <a class="nav-brand" href="./">
+          <img class="nav-brand-logo" src="./assets/images/logo-sinargalih-transparent.png" alt="Logo Desa Sinargalih" />
+          <span>Sinargalih Connect</span>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="./">Beranda</a>
+          <a class="nav-link" href="./profil-desa">Profil Desa</a>
+          <a class="nav-link" href="./peta-desa">Peta Desa</a>
+          <a class="nav-link" href="./pemerintahan">Pemerintahan</a>
+          <a class="nav-link" href="./berita">Berita</a>
+          <a class="nav-link" href="./katalog-umkm">UMKM</a>
+          <a class="nav-link active" href="./persuratan" aria-current="page">Persuratan</a>
+          <a class="nav-link" href="./kontak">Kontak</a>
+        </div>
+      </nav>
+
+      <main class="content-shell">
+        <section class="page-intro preview-card">
+          <p class="eyebrow">Persuratan Digital</p>
+          <h1>Buat Draft Surat Desa</h1>
+          <p>
+            Pilih jenis surat, isi data pemohon, lalu sistem akan menyiapkan draft surat
+            yang bisa dicetak atau disimpan sebagai PDF.
+          </p>
+        </section>
+
+        <section class="letter-workspace">
+          <form class="letter-form preview-card" id="letterForm">
+            <div class="letter-form-heading">
+              <p class="eyebrow">Form Pemohon</p>
+              <h2>Data Surat</h2>
+            </div>
+
+            <label class="letter-field letter-field-wide">
+              <span>Jenis Surat</span>
+              <select id="letterType" name="letterType"></select>
+            </label>
+
+            <div class="letter-field-grid" id="letterFields"></div>
+
+            <label class="letter-field letter-field-wide">
+              <span>Penanda Tangan</span>
+              <select id="letterSigner" name="letterSigner">
+                <option value="none">Tidak membutuhkan tanda tangan</option>
+                <option value="kepala">Kepala Desa</option>
+                <option value="sekretaris">Sekretaris Desa</option>
+              </select>
+            </label>
+
+            <label class="letter-field letter-field-wide">
+              <span>Catatan Tambahan</span>
+              <textarea id="letterNotes" name="letterNotes" rows="3" placeholder="Opsional, misalnya keperluan khusus atau keterangan tambahan."></textarea>
+            </label>
+
+            <div class="letter-actions">
+              <button class="primary-button" type="submit">Generate Surat</button>
+              <button class="ghost-button" type="button" id="resetLetterButton">Reset</button>
+            </div>
+          </form>
+
+          <aside class="letter-guide preview-card">
+            <p class="eyebrow">Alur Layanan</p>
+            <h2>Cara Menggunakan</h2>
+            <ol>
+              <li>Pilih jenis surat yang dibutuhkan.</li>
+              <li>Lengkapi data pemohon sesuai form.</li>
+              <li>Generate draft surat dan cek kembali isinya.</li>
+              <li>Cetak atau simpan PDF melalui tombol cetak.</li>
+              <li>Jika perlu tanda tangan, hubungi kontak desa untuk verifikasi.</li>
+            </ol>
+            <a class="primary-button" href="./kontak">Hubungi Kontak Desa</a>
+          </aside>
+        </section>
+
+        <section class="letter-preview-section preview-card">
+          <div class="letter-preview-toolbar">
+            <div>
+              <p class="eyebrow">Preview Surat</p>
+              <h2>Draft Siap Cetak</h2>
+            </div>
+            <button class="primary-button" type="button" id="printLetterButton">Cetak / Simpan PDF</button>
+          </div>
+
+          <article class="letter-paper" id="letterPreview" aria-live="polite">
+            <div class="letter-empty-state">
+              Isi form dan klik Generate Surat untuk melihat draft di sini.
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
