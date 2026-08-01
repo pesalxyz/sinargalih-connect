@@ -442,7 +442,7 @@ function safeUrl(value) {
     return "";
   }
 
-  if (/^(https?:|data:image\/)/i.test(url)) {
+  if (/^(https?:|data:image\/|\.?\/?assets\/images\/)/i.test(url)) {
     return escapeHtml(url);
   }
 
