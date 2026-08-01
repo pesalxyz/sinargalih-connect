@@ -420,11 +420,14 @@ async function getLiveSources(message) {
   const query = buildSearchQuery(message);
   const sourceSeeds = getOfficialSourceSeeds(message);
   const searchResults = await searchWeb(query);
-  const rankedSources = uniqueSources([...sourceSeeds, ...searchResults])
+  const candidates = uniqueSources([...sourceSeeds, ...searchResults])
+    .sort((a, b) => sourceRank(b) - sourceRank(a))
+    .slice(0, MAX_CONTEXT_SOURCES + 3);
+  const fetchedSources = await Promise.all(candidates.map(fetchSourceContent));
+  return fetchedSources
     .filter((source) => isRelevantSource(source, message))
     .sort((a, b) => sourceRank(b) - sourceRank(a))
     .slice(0, MAX_CONTEXT_SOURCES);
-  return Promise.all(rankedSources.map(fetchSourceContent));
 }
 
 function buildLiveContext(sources) {
