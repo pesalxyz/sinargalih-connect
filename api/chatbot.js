@@ -188,8 +188,10 @@ function sourceRank(source) {
   const url = source.url.toLowerCase();
   const text = normalizeMessage(`${source.title || ""} ${source.snippet || ""} ${source.content || ""}`);
   let score = 0;
+  if (source.type === "place") score += 45;
   if (url.includes(".go.id")) score += 40;
   if (url.includes("purwakartakab.go.id")) score += 30;
+  if (url.includes("google.com/maps")) score += 28;
   if (url.includes("dinkes")) score += 20;
   if (url.includes("puskesmas")) score += 18;
   if (url.includes("sinargalih") || url.includes("maniis")) score += 12;
@@ -262,6 +264,80 @@ function getOfficialSourceSeeds(message) {
   }
 
   return sources;
+}
+
+function shouldUsePlaceSearch(message) {
+  const normalized = normalizeMessage(message);
+  return /\b(lokasi|alamat|terdekat|dimana|di mana|maps|rute|puskesmas|polsek|kantor|sekolah|klinik|rumah sakit|fasilitas)\b/.test(normalized);
+}
+
+function buildPlaceQuery(message) {
+  const normalized = normalizeMessage(message);
+  if (normalized.includes("sinargalih") || normalized.includes("maniis") || normalized.includes("purwakarta")) {
+    return message;
+  }
+  return `${message} Maniis Purwakarta Jawa Barat`;
+}
+
+async function searchWithGooglePlaces(message) {
+  if (!process.env.GOOGLE_MAPS_API_KEY || !shouldUsePlaceSearch(message)) {
+    return [];
+  }
+
+  try {
+    const result = await fetchWithTimeout("https://places.googleapis.com/v1/places:searchText", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Goog-Api-Key": process.env.GOOGLE_MAPS_API_KEY,
+        "X-Goog-FieldMask": [
+          "places.displayName",
+          "places.formattedAddress",
+          "places.location",
+          "places.googleMapsUri",
+          "places.nationalPhoneNumber",
+          "places.currentOpeningHours"
+        ].join(",")
+      },
+      body: JSON.stringify({
+        textQuery: buildPlaceQuery(message),
+        languageCode: "id",
+        regionCode: "ID"
+      })
+    }, SEARCH_TIMEOUT_MS);
+
+    const data = await result.json();
+    if (!result.ok || !Array.isArray(data.places)) {
+      return [];
+    }
+
+    return data.places.slice(0, 3).map((place) => {
+      const name = place.displayName?.text || "Lokasi Google Maps";
+      const details = [
+        `Nama: ${name}`,
+        place.formattedAddress ? `Alamat: ${place.formattedAddress}` : "",
+        place.nationalPhoneNumber ? `Telepon: ${place.nationalPhoneNumber}` : "",
+        place.currentOpeningHours?.weekdayDescriptions?.length
+          ? `Jam buka: ${place.currentOpeningHours.weekdayDescriptions.join("; ")}`
+          : "",
+        place.location
+          ? `Koordinat: ${place.location.latitude}, ${place.location.longitude}`
+          : "",
+        place.googleMapsUri ? `Google Maps: ${place.googleMapsUri}` : ""
+      ].filter(Boolean);
+
+      return {
+        type: "place",
+        title: `${name} - Google Maps`,
+        url: place.googleMapsUri || "https://www.google.com/maps",
+        snippet: place.formattedAddress || "",
+        content: details.join("\n")
+      };
+    });
+  } catch (error) {
+    console.warn("Google Places gagal:", error.message);
+    return [];
+  }
 }
 
 async function searchWithBrave(query) {
@@ -419,8 +495,11 @@ async function fetchSourceContent(source) {
 async function getLiveSources(message) {
   const query = buildSearchQuery(message);
   const sourceSeeds = getOfficialSourceSeeds(message);
-  const searchResults = await searchWeb(query);
-  const candidates = uniqueSources([...sourceSeeds, ...searchResults])
+  const [placeResults, searchResults] = await Promise.all([
+    searchWithGooglePlaces(message),
+    searchWeb(query)
+  ]);
+  const candidates = uniqueSources([...placeResults, ...sourceSeeds, ...searchResults])
     .sort((a, b) => sourceRank(b) - sourceRank(a))
     .slice(0, MAX_CONTEXT_SOURCES + 3);
   const fetchedSources = await Promise.all(candidates.map(fetchSourceContent));
