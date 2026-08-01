@@ -152,4 +152,14 @@ function createChatbot() {
   renderMessages();
 }
 
-document.addEventListener("DOMContentLoaded", createChatbot);
+function scheduleChatbot() {
+  const loadChatbot = () => createChatbot();
+  if (window.requestIdleCallback) {
+    window.requestIdleCallback(loadChatbot, { timeout: 1800 });
+    return;
+  }
+
+  window.setTimeout(loadChatbot, 900);
+}
+
+document.addEventListener("DOMContentLoaded", scheduleChatbot);

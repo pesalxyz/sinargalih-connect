@@ -1,5 +1,5 @@
 const SINARGALIH_STORAGE_KEY = "sinargalih-connect-admin-data-v1";
-const CONTENT_FETCH_TIMEOUT_MS = 2500;
+const CONTENT_FETCH_TIMEOUT_MS = 1200;
 
 const sinargalihDefaultData = {
   umkm: [
