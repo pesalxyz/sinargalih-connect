@@ -1474,10 +1474,23 @@ button {
 
 .letter-head {
   display: grid;
-  gap: 4px;
-  text-align: center;
+  grid-template-columns: 72px minmax(0, 1fr) 72px;
+  gap: 14px;
+  align-items: center;
   padding-bottom: 18px;
   border-bottom: 3px double #1f1b15;
+  text-align: center;
+}
+
+.letter-head img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.letter-head div {
+  display: grid;
+  gap: 4px;
 }
 
 .letter-head strong {
@@ -2402,6 +2415,10 @@ button {
   }
 }
 
+@page {
+  margin: 0;
+}
+
 @media print {
   body {
     padding: 0;
@@ -2442,8 +2459,6 @@ button {
   }
 
   .letter-validation-note {
-    border: 1px solid #1f1b15;
-    background: white;
-    color: #1f1b15;
+    display: none;
   }
 }

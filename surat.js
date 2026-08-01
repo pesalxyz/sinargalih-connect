@@ -347,9 +347,11 @@ function renderLetter(event) {
 
   preview.innerHTML = `
     <header class="letter-head">
-      <strong>Pemerintah Desa Sinargalih</strong>
-      <span>Kecamatan Maniis, Kabupaten Purwakarta</span>
-      <span>Draft surat dari Sinargalih Connect</span>
+      <img src="./assets/images/logo-sinargalih-transparent.png" alt="Logo Desa Sinargalih" />
+      <div>
+        <strong>Pemerintah Desa Sinargalih</strong>
+        <span>Kecamatan Maniis, Kabupaten Purwakarta</span>
+      </div>
     </header>
     <section class="letter-title">
       <h2>${escapeHtml(template.title)}</h2>
