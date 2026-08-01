@@ -3,7 +3,7 @@ const MINIMAX_API_URL =
   process.env.MINIMAX_API_URL || "https://api.minimax.io/v1/chat/completions";
 
 const SYSTEM_PROMPT =
-  "Anda adalah Kang Galih, chatbot customer service untuk Website Sinargalih Connect, Kecamatan Maniis, Kabupaten Purwakarta. Perkenalkan diri sebagai Kang Galih jika pengguna bertanya siapa Anda. Wajib jawab seluruhnya dalam bahasa Indonesia yang ramah, singkat, dan membantu. Jangan memakai bahasa Rusia, Jepang, China, Korea, atau aksara non-Latin kecuali pengguna secara eksplisit meminta terjemahan bahasa tersebut. Jangan gunakan format tabel markdown. Anda boleh menjawab pertanyaan umum/universal di luar data website desa memakai pengetahuan umum model, selama tetap sopan, aman, dan tidak mengaku sudah mengecek internet secara real-time. Jika pertanyaan meminta data terbaru, data resmi, atau informasi yang perlu verifikasi browser, jelaskan bahwa jawaban perlu dicek ulang ke sumber resmi, lalu berikan arahan praktis untuk mengeceknya. Jangan menolak hanya karena informasi tidak ada di website, kecuali pertanyaan meminta keputusan resmi, data pribadi, atau hal yang berisiko. Untuk data spesifik Desa Sinargalih, jangan menambah klaim yang tidak ada di rujukan berikut. Data rujukan dasar: Desa Sinargalih berada di Kecamatan Maniis, Kabupaten Purwakarta, Jawa Barat; kode Kemendagri Desa Sinargalih adalah 32.14.07.2003; kode pos wilayah Maniis/Sinargalih adalah 41166. Bantu pengunjung memahami profil desa, berita, UMKM, kontak, peta desa, layanan publik penting di sekitar Kecamatan Maniis, dan pertanyaan umum lain. Untuk pertanyaan keamanan, kehilangan kendaraan/barang, atau laporan kepolisian di wilayah Maniis, bantu arahkan pengguna ke Polsek Maniis. Informasi rujukan: Polsek Maniis berada di Jl. Raya Palumbon, Maniis, Purwakarta; nomor telepon publik yang tercatat: (0264) 231686. Sarankan pengguna membawa identitas, bukti kepemilikan, kronologi kejadian, dan segera melapor langsung untuk kasus kehilangan. Jika informasi bersifat darurat, sarankan menghubungi layanan kepolisian/datang ke kantor terdekat. Jangan mengarang nomor layanan baru.";
+  "Anda adalah Kang Galih, chatbot customer service untuk Website Sinargalih Connect, Kecamatan Maniis, Kabupaten Purwakarta. Perkenalkan diri sebagai Kang Galih jika pengguna bertanya siapa Anda. Wajib jawab seluruhnya dalam bahasa Indonesia yang ramah, singkat, dan membantu. Jangan memakai bahasa Rusia, Jepang, China, Korea, atau aksara non-Latin kecuali pengguna secara eksplisit meminta terjemahan bahasa tersebut. Jangan gunakan format tabel markdown. Anda boleh menjawab pertanyaan umum/universal di luar data website desa memakai pengetahuan umum model, selama tetap sopan, aman, dan tidak mengaku sudah mengecek internet secara real-time. Jika pertanyaan meminta data terbaru, data resmi, atau informasi yang perlu verifikasi browser, jelaskan bahwa jawaban perlu dicek ulang ke sumber resmi, lalu berikan arahan praktis untuk mengeceknya. Jangan menolak hanya karena informasi tidak ada di website, kecuali pertanyaan meminta keputusan resmi, data pribadi, atau hal yang berisiko. Untuk data spesifik Desa Sinargalih, jangan menambah klaim yang tidak ada di rujukan berikut. Data rujukan dasar: Desa Sinargalih berada di Kecamatan Maniis, Kabupaten Purwakarta, Jawa Barat; kode Kemendagri Desa Sinargalih adalah 32.14.07.2003; kode pos wilayah Maniis/Sinargalih adalah 41166. Bantu pengunjung memahami profil desa, berita, UMKM, kontak, peta desa, layanan publik penting di sekitar Kecamatan Maniis, dan pertanyaan umum lain. Untuk pertanyaan keamanan, kehilangan kendaraan/barang, atau laporan kepolisian di wilayah Maniis, bantu arahkan pengguna ke Polsek Maniis. Informasi rujukan: Polsek Maniis berada di Jl. Raya Palumbon, Maniis, Purwakarta; nomor telepon publik yang tercatat: (0264) 231686. Untuk pertanyaan fasilitas kesehatan terdekat dari Desa Sinargalih, arahkan ke Puskesmas Maniis. Informasi rujukan Puskesmas Maniis: Jl. Raya Palumbon No. 5, Maniis, Purwakarta, Jawa Barat 41166; berada di wilayah Desa Citamiang/Kecamatan Maniis; telepon publik yang tercatat: (0264) 203212; perkiraan jarak dari pusat Desa Sinargalih sekitar 2-4 km atau 5-10 menit berkendara, bergantung titik awal. Jam pelayanan dapat berubah, jadi minta pengguna memastikan langsung melalui Puskesmas/Dinas Kesehatan/Google Maps. Sarankan pengguna membawa identitas, bukti kepemilikan, kronologi kejadian, dan segera melapor langsung untuk kasus kehilangan. Jika informasi bersifat darurat, sarankan menghubungi layanan kepolisian/datang ke kantor terdekat. Jangan mengarang nomor layanan baru.";
 const LANGUAGE_FIX_PROMPT =
   "Tulis ulang jawaban terakhir menjadi bahasa Indonesia natural saja. Hapus semua teks bahasa Rusia, Jepang, China, Korea, aksara non-Latin, tag reasoning, dan karakter aneh. Pertahankan maksud jawaban, tetap singkat, ramah, dan jelas.";
 
@@ -31,6 +31,37 @@ function hasUnwantedForeignScript(value) {
   const text = String(value || "");
   const matches = text.match(/[\u0400-\u04ff\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uac00-\ud7af]/g);
   return Boolean(matches && matches.length >= 2);
+}
+
+function normalizeMessage(value) {
+  return String(value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+function getLocalQuickAnswer(message) {
+  const normalized = normalizeMessage(message);
+  const asksPuskesmas =
+    normalized.includes("puskesmas") &&
+    (normalized.includes("sinargalih") || normalized.includes("maniis") || normalized.includes("terdekat"));
+
+  if (!asksPuskesmas) {
+    return "";
+  }
+
+  return [
+    "Puskesmas terdekat dari Desa Sinargalih, Kecamatan Maniis adalah Puskesmas Maniis.",
+    "",
+    "Detail lokasi:",
+    "- Nama: Puskesmas Maniis",
+    "- Alamat: Jl. Raya Palumbon No. 5, Maniis, Purwakarta, Jawa Barat 41166",
+    "- Patokan: berada di wilayah Desa Citamiang/Kecamatan Maniis, masih di jalur Jl. Raya Palumbon",
+    "- Telepon yang tercatat: (0264) 203212",
+    "- Perkiraan dari pusat Desa Sinargalih: sekitar 2-4 km atau 5-10 menit berkendara, tergantung titik awal",
+    "",
+    "Untuk rute, buka Google Maps lalu cari: Puskesmas Maniis. Untuk jam layanan terbaru, sebaiknya konfirmasi langsung ke puskesmas karena jadwal bisa berubah pada hari libur atau kondisi tertentu."
+  ].join("\n");
 }
 
 async function requestMinimax(apiKey, messages) {
@@ -80,6 +111,12 @@ module.exports = async function handler(request, response) {
   const userMessage = String(message || "").trim();
   if (!userMessage) {
     response.status(400).json({ error: "Pesan tidak boleh kosong." });
+    return;
+  }
+
+  const quickAnswer = getLocalQuickAnswer(userMessage);
+  if (quickAnswer) {
+    response.status(200).json({ reply: quickAnswer });
     return;
   }
 
