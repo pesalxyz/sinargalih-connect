@@ -165,6 +165,7 @@ const todayLabel = () => new Intl.DateTimeFormat("id-ID", {
 }).format(new Date());
 
 const normalizeValue = (value) => value.trim() || "................................";
+const genderFieldNames = new Set(["jenisKelamin", "jenisKelaminAnak"]);
 
 function fillTypeOptions() {
   Object.entries(letterTemplates).forEach(([value, template]) => {
@@ -183,9 +184,16 @@ function renderFields() {
     const field = document.createElement("label");
     field.className = "letter-field";
     const isLongField = ["alamat", "keperluan", "keterangan", "permohonan"].includes(name);
+    const isGenderField = genderFieldNames.has(name);
     field.innerHTML = `
       <span>${escapeHtml(label)}</span>
-      ${isLongField
+      ${isGenderField
+        ? `<select name="${name}" required>
+            <option value="">Pilih jenis kelamin</option>
+            <option value="Laki-laki">Laki-laki</option>
+            <option value="Perempuan">Perempuan</option>
+          </select>`
+        : isLongField
         ? `<textarea name="${name}" rows="3" required></textarea>`
         : `<input name="${name}" type="text" required />`}
     `;
