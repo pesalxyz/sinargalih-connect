@@ -68,6 +68,34 @@ function normalizeMessage(value) {
     .replace(/[\u0300-\u036f]/g, "");
 }
 
+function getLocalReferenceAnswer(message) {
+  const normalized = normalizeMessage(message);
+  const asksPuskesmas =
+    normalized.includes("puskesmas") &&
+    (normalized.includes("sinargalih") || normalized.includes("maniis") || normalized.includes("terdekat"));
+
+  if (!asksPuskesmas) {
+    return "";
+  }
+
+  return [
+    "Puskesmas terdekat dari Desa Sinargalih adalah Puskesmas Maniis.",
+    "",
+    "Detail lokasi:",
+    "- Nama: Puskesmas Maniis",
+    "- Alamat: Jl. Raya Palumbon No. 5, Maniis, Purwakarta, Jawa Barat 41166",
+    "- Patokan: berada di wilayah Kecamatan Maniis, sehingga menjadi fasilitas kesehatan utama yang melayani warga Desa Sinargalih dan desa sekitar",
+    "- Telepon yang tercatat: (0264) 203212",
+    "- Perkiraan dari pusat Desa Sinargalih: sekitar 2-4 km atau 5-10 menit berkendara, tergantung titik awal",
+    "",
+    "Untuk rute, buka Google Maps lalu cari Puskesmas Maniis. Untuk jam layanan terbaru, sebaiknya konfirmasi langsung ke puskesmas atau Dinas Kesehatan Kabupaten Purwakarta karena jadwal bisa berubah pada hari libur atau kondisi tertentu.",
+    "",
+    "Sumber:",
+    "1. Dinas Kesehatan Kabupaten Purwakarta: https://dinkes.purwakartakab.go.id/puskesmas",
+    "2. Google Maps: https://www.google.com/maps/search/?api=1&query=Puskesmas%20Maniis"
+  ].join("\n");
+}
+
 async function requestMinimax(apiKey, messages) {
   const minimaxResponse = await fetch(MINIMAX_API_URL, {
     method: "POST",
@@ -573,6 +601,12 @@ module.exports = async function handler(request, response) {
   const userMessage = String(message || "").trim();
   if (!userMessage) {
     response.status(400).json({ error: "Pesan tidak boleh kosong." });
+    return;
+  }
+
+  const localReferenceAnswer = getLocalReferenceAnswer(userMessage);
+  if (localReferenceAnswer) {
+    response.status(200).json({ reply: localReferenceAnswer });
     return;
   }
 
